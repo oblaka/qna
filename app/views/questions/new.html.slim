@@ -1,0 +1,9 @@
+
+= bootstrap_form_for @question do |f|
+  h3 Create a question
+  br
+  = f.text_field :title, label: "Your question", autofocus:true
+  = f.text_area :body, label: "more details!"
+  = f.submit 'Ask me now!', class: 'btn btn-success btn-sm'
+  = '  |  '
+  = link_to 'Browse all questions', questions_path, class: 'btn btn-primary btn-sm'

@@ -1,0 +1,8 @@
+= bootstrap_form_for @question do |f|
+  h3 Edit a question
+  br
+  = f.text_field :title, label: "Your question", autofocus:true
+  = f.text_area :body, label: "more details"
+  = f.submit 'save question', class: 'btn btn-success btn-sm'
+  = '  |  '
+  = link_to 'Back to question', question_path(@question), class: 'btn btn-primary btn-sm'
