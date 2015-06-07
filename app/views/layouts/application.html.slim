@@ -6,13 +6,23 @@ html
     = stylesheet_link_tag    "application", media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag "application", 'data-turbolinks-track' => true
     = csrf_meta_tags
-    .row
-      .col-md-2
-      .col-md-6
-        h2 = link_to 'Questions and Answers', questions_path
 
   body
+    nav.navbar.navbar-default role="navigation"
+      .container-fluid
+        /! Brand and toggle get grouped for better mobile display
+        .navbar-header
+          = link_to 'Questions and Answers', questions_path, class: 'navbar-brand'
+          ul.nav.navbar-nav.navbar-right
+            - if signed_in?
+              li= link_to 'Logout', destroy_user_session_path, method: :delete
+            -else
+              li= link_to 'Sign up now', new_user_registration_path
+              li= link_to 'Sign in', new_user_session_path
+
     .row
       .col-md-1
       .col-md-6
+        alert = alert
+        notice = notice
         = yield

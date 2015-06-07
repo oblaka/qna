@@ -1,14 +1,20 @@
-h2
+h2 id= "question_#{@question.id}"
   = @question.title
+  - if @question.user == current_user
+    = link_to 'edit', edit_question_path(@question), class: 'btn btn-warning btn-xs'
+    = link_to 'delete', @question, method: :delete, class: 'btn btn-danger btn-xs'
 h3
   = @question.body
 br
 
+h2 Answers:
 - @question.answers.each do |answer|
   - if answer.persisted?
-    = answer.body
-    = link_to 'delete', answer, method: :delete, class: 'btn btn-danger btn-xs'
-  br
+    p id= "answer_#{answer.id}"
+      = answer.body
+      - if answer.user == current_user
+        = link_to 'delete', answer, method: :delete, class: 'btn btn-danger btn-xs'
+br
 
 - if @answer
   = bootstrap_form_for @answer, url: question_answers_path(@question) do |f|
