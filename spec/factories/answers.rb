@@ -1,7 +1,8 @@
 FactoryGirl.define do
 
   factory :answer do
-    association :question
+    user
+    question
     body "You must going to sleep in this situation"
   end
 

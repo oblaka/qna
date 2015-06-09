@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
 
   let(:question) { create(:question) }
+  let(:user) { create(:user) }
   let(:invalid_question) { new(:invalid_question) }
   let(:questions) { create_list(:question, 2) }
 
@@ -17,20 +18,39 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    before { get :show, id: question }
-    it 'assign requested question to @question' do
-      expect(assigns(:question)).to eq question
+    context 'any user' do
+      before { get :show, id: question }
+      it 'assign requested question to @question' do
+        expect(assigns(:question)).to eq question
+      end
+      it 'render show view' do
+        expect(response).to render_template :show
+      end
     end
-    it 'assigns a new Answer to @answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
+
+    context 'authenticated user' do
+      before do
+        sign_in user
+        get :show, id: question
+      end
+      it 'assigns a new Answer to @answer' do
+        expect(assigns(:answer)).to be_a_new(Answer)
+      end
     end
-    it 'render show view' do
-      expect(response).to render_template :show
+
+    context 'non-authenticated user' do
+      it 'assigns nil to @answer' do
+        expect(assigns(:answer)).to eq nil
+      end
     end
+
   end
 
   describe 'GET #new' do
-    before { get :new }
+    before do
+      sign_in(user)
+      get :new
+    end
     it 'assigns new question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
     end
@@ -40,23 +60,49 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    before { get :edit, id: question }
-    it 'assign requested question to @question' do
-      expect(assigns(:question)).to eq question
+
+    context 'user is owner of question' do
+      before do
+        sign_in(question.user)
+        get :edit, id: question
+      end
+      it 'assign requested question to @question' do
+        expect(assigns(:question)).to eq question
+      end
+      it 'render edit view' do
+        expect(response).to render_template :edit
+      end
     end
-    it 'render edit view' do
-      expect(response).to render_template :edit
+
+    context 'user is owner of question' do
+      before do
+        sign_in(user)
+        get :edit, id: question
+      end
+      it 'render edit view' do
+        expect(response).to render_template :edit
+      end
     end
+
   end
 
   describe 'POST #create' do
+    before { sign_in(user) }
     context 'valid question params' do
       it "save question in db" do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
+      it 'belongs to user' do
+        post :create, question: attributes_for(:question)
+        expect(assigns(:question).user).to match user
+      end
       it 'render show view' do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
+      end
+      it 'show success notice' do
+        post :create, question: attributes_for(:question)
+        expect(flash[:notice]).to have_content 'Your question successfully created.'
       end
     end
     context 'invalid question params' do
@@ -71,43 +117,94 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    context 'valid question params' do
+    context 'owner patch question' do
+      before { sign_in(question.user) }
+      context 'valid question params' do
+        it 'assign requested question to @question' do
+          patch :update, id: question, question: attributes_for(:question)
+          expect(assigns(:question)).to eq question
+        end
+        it 'change question attributes' do
+          patch :update, id: question, question: { title: 'new title', body: 'new large body' }
+          question.reload
+          expect(question.title).to eq('new title')
+          expect(question.body).to eq('new large body')
+        end
+        it 'redirect to question' do
+          patch :update, id: question, question: { title: 'new title', body: 'new large body' }
+          expect(response).to redirect_to question
+        end
+        it 'show notice' do
+          patch :update, id: question, question: { title: 'new title', body: 'new large body' }
+          expect(flash[:notice]).to have_content 'Your question successfully updated.'
+        end
+      end
+      context 'invalid question params' do
+        before { patch :update, id: question, question: { title: 'new title', body: nil } }
+        it 'dont change question attributes' do
+          question.reload
+          expect(question.title).to eq('My Question')
+          expect(question.body).to eq('My Detailed shit')
+        end
+        it 're-render edit view' do
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    context 'another (not owner) user patch question' do
+      before { sign_in(user) }
       it 'assign requested question to @question' do
         patch :update, id: question, question: attributes_for(:question)
         expect(assigns(:question)).to eq question
       end
-      it 'change question attributes' do
+      it 'not change question attributes' do
         patch :update, id: question, question: { title: 'new title', body: 'new large body' }
         question.reload
-        expect(question.title).to eq('new title')
-        expect(question.body).to eq('new large body')
+        expect(question.title).to eq('My Question')
+        expect(question.body).to eq('My Detailed shit')
       end
       it 'redirect to question' do
         patch :update, id: question, question: { title: 'new title', body: 'new large body' }
         expect(response).to redirect_to question
       end
-    end
-    context 'invalid question params' do
-      before { patch :update, id: question, question: { title: 'new title', body: nil } }
-      it 'dont change question attributes' do
-        question.reload
-        expect(question.title).to eq('My Question')
-        expect(question.body).to eq('Detailed shit')
-      end
-      it 're-render edit view' do
-        expect(response).to render_template :edit
+      it 'show alert' do
+        patch :update, id: question, question: { title: 'new title', body: 'new large body' }
+        expect(flash[:alert]).to have_content 'It is not yours question!'
       end
     end
   end
 
   describe 'DELETE #destroy' do
+    context 'owner can' do
+      before { sign_in(question.user) }
+      it 'delete question' do
+        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+      end
+      it 'render index view' do
+        delete :destroy, id: question
+        expect(response).to redirect_to questions_path
+      end
+    end
+  end
+
+  context 'another_user can not' do
+    before { sign_in(user) }
     it 'delete question' do
       question
-      expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+      expect { delete :destroy, id: question }.to_not change(Question, :count)
     end
-    it 'render index view' do
+
+    it 'rendirect to question' do
+      question
       delete :destroy, id: question
-      expect(response).to redirect_to questions_path
+      expect(response).to redirect_to question
+    end
+
+    it 'rendirect to question' do
+      question
+      delete :destroy, id: question
+      expect(flash[:alert]).to have_content 'It is not yours question!'
     end
   end
 
