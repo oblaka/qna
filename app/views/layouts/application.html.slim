@@ -13,7 +13,7 @@ html
         /! Brand and toggle get grouped for better mobile display
         .navbar-header
           = link_to 'Questions and Answers', questions_path, class: 'navbar-brand'
-          ul.nav.navbar-nav.navbar-right
+          .ul.nav.navbar-nav.navbar-right
             - if signed_in?
               li= link_to 'Logout', destroy_user_session_path, method: :delete
             -else
@@ -21,8 +21,13 @@ html
               li= link_to 'Sign in', new_user_session_path
 
     .row
-      .col-md-1
+      .col-md-2
       .col-md-6
-        alert = alert
-        notice = notice
+        .alert
+          - unless alert.nil?
+            .alert-success
+              = alert
+          - unless notice.nil?
+            .alert-warning
+              = notice
         = yield

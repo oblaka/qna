@@ -4,10 +4,14 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.build(answer_params.merge(user: current_user))
-    if @answer.save
-      redirect_to @question, notice: 'Your answer successfully created.'
-    else
-      render 'questions/show'
+    respond_to do |format|
+      if @answer.save
+        @new_answer = @question.answers.build(user: current_user)
+        format.js   { render 'create' }
+      else
+        @new_answer = @answer
+        format.js   { render 'create_fail' }
+      end
     end
   end
 

@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answer = @question.answers.build unless current_user.nil?
+    @new_answer = @question.answers.build unless current_user.nil?
   end
 
   def new

@@ -12,8 +12,8 @@ feature 'Delete question', %q{
   scenario 'author can delete own question on show' do
     sign_in(answer.user)
     visit question_path(answer.question)
-    within page.find("#answer_#{answer.id}") do
-      find(:link, "delete").click
+    within "#answer_#{answer.id}" do
+      click_on "delete"
     end
     expect(page).to have_content 'Answer destroyed successfully!'
   end
@@ -21,13 +21,16 @@ feature 'Delete question', %q{
   scenario 'non-author can not delete question on show' do
     sign_in(user)
     visit question_path(answer.question)
-    expect(page.find("#answer_#{answer.id}")).to have_no_link("delete")
-
+    within "#answer_#{answer.id}" do
+      expect(page).to_not have_link("delete")
+    end
   end
 
   scenario 'non authenticated user question on show' do
     visit question_path(answer.question)
-    expect(page.find("#answer_#{answer.id}")).to have_no_link("delete")
+    within "#answer_#{answer.id}" do
+      expect(page).to_not have_link("delete")
+    end
   end
 
 end
