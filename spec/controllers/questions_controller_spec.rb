@@ -33,14 +33,14 @@ RSpec.describe QuestionsController, type: :controller do
         sign_in user
         get :show, id: question
       end
-      it 'assigns a new Answer to @answer' do
-        expect(assigns(:answer)).to be_a_new(Answer)
+      it 'assigns a new Answer to @new_answer' do
+        expect(assigns(:new_answer)).to be_a_new(Answer)
       end
     end
 
     context 'non-authenticated user' do
-      it 'assigns nil to @answer' do
-        expect(assigns(:answer)).to eq nil
+      it 'assigns nil to @new_answer' do
+        expect(assigns(:new_answer)).to eq nil
       end
     end
 

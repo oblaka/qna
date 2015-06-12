@@ -1,0 +1,4 @@
+p id= "answer_#{@answer.id}"
+  = @answer.body
+  - if @answer.user == current_user
+    = link_to 'delete', @answer, method: :delete, class: 'btn btn-danger btn-xs'

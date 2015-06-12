@@ -12,43 +12,43 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'with valid parameters' do
         it 'should save new answer in database' do
-          expect { post :create, question_id: question.id, answer: attributes_for(:answer) }
+          expect { post :create, question_id: question.id, answer: attributes_for(:answer),format: :js }
           .to change(Answer, :count).by(1)
         end
-        it 'redirects to question show view' do
-          post :create, question_id: question.id, answer: attributes_for(:answer)
-          expect(response).to redirect_to question_path(question)
+        it 'render create template' do
+          post :create, question_id: question.id, answer: attributes_for(:answer),format: :js
+          expect(response).to render_template :create
         end
         it 'increases question answers count by 1' do
-          expect { post :create, question_id: question.id, answer: attributes_for(:answer) }
+          expect { post :create, question_id: question.id, answer: attributes_for(:answer),format: :js }
           .to change(question.answers, :count).by(1)
         end
         it 'belongs to question' do
-          post :create, question_id: question.id, answer: attributes_for(:answer)
+          post :create, question_id: question.id, answer: attributes_for(:answer),format: :js
           expect(assigns(:answer).question).to match question
         end
         it 'belongs to user' do
-          post :create, question_id: question.id, answer: attributes_for(:answer)
+          post :create, question_id: question.id, answer: attributes_for(:answer),format: :js
           expect(assigns(:answer).user).to match user
         end
       end
 
       context 'with invalid params' do
         it 'does not save the answer' do
-          expect { post :create, question_id: question.id, answer: attributes_for(:invalid_answer) }
+          expect { post :create, question_id: question.id, answer: attributes_for(:invalid_answer),format: :js }
           .to_not change(Answer, :count)
         end
 
         it 'redirects to question show view' do
-          post :create, question_id: answer.question.id, answer: attributes_for(:answer)
-          expect(response).to redirect_to question_path(answer.question)
+          post :create, question_id: answer.question.id, answer: attributes_for(:answer),format: :js
+          expect(response).to render_template :create
         end
       end
     end
 
     context 'non authenticated user' do
       it 'should not save new answer in database' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:answer) }
+        expect { post :create, question_id: question.id, answer: attributes_for(:answer),format: :js }
         .to_not change(Answer, :count)
       end
     end

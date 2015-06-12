@@ -1,0 +1,3 @@
+= bootstrap_form_for [@question, @new_answer], remote: true do |f|
+  = f.text_area :body, label: 'Type your answer', autofocus:true
+  = f.submit 'Add an answer', class: 'btn btn-success btn-sm'
