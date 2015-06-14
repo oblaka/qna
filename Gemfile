@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.1'
+gem 'rails'
 # Use postgresql as the database for Active Record
 gem 'pg'
 
@@ -52,8 +52,8 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'shoulda-matchers', require: false
   gem 'capybara'
+  gem 'poltergeist'
   gem 'launchy'
-  gem 'selenium-webdriver'
   gem 'database_cleaner'
 
 end

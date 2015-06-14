@@ -7,15 +7,24 @@ Things you may want to cover:
 
 * Ruby version
 
+ruby 2.2.1p85
+
 * System dependencies
+
+Postgres.app
+PhantomJS
 
 * Configuration
 
 * Database creation
 
+rake db:create:all
+
 * Database initialization
 
 * How to run the test suite
+
+rspec
 
 * Services (job queues, cache servers, search engines, etc.)
 

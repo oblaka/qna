@@ -1,6 +1,6 @@
-require 'rails_helper'
+require_relative 'feature_helper'
 
-feature 'Delete question', %q{
+feature 'Delete answers', %q{
   In order to keep only actual answers
   As an authenticated user and author
   I can delete my answer
@@ -9,7 +9,7 @@ feature 'Delete question', %q{
   given(:user) { create(:user) }
   given(:answer) { create(:answer) }
 
-  scenario 'author can delete own question on show' do
+  scenario 'author can delete own question on show', js: true do
     sign_in(answer.user)
     visit question_path(answer.question)
     within "#answer_#{answer.id}" do

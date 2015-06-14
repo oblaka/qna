@@ -74,13 +74,16 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'user is owner of question' do
+    context 'user is not owner of question' do
       before do
         sign_in(user)
         get :edit, id: question
       end
       it 'render edit view' do
-        expect(response).to render_template :edit
+        expect(response).to redirect_to questions_path
+      end
+      it 'show warning' do
+        expect(flash[:notice]).to have_content 'It is not yours question!'
       end
     end
 
