@@ -15,6 +15,7 @@ class QuestionsController < ApplicationController
   end
 
   def edit
+    redirect_to questions_path, notice: 'It is not yours question!' unless owner?
   end
 
   def create
