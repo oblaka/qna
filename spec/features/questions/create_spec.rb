@@ -1,4 +1,4 @@
-require_relative 'feature_helper'
+require_relative '../feature_helper'
 
 feature 'Create question', %q{
   In order to get answer from community
@@ -17,7 +17,7 @@ feature 'Create question', %q{
     find_field('Your question').value == ''
     fill_in 'Your question', with: question.title
     fill_in 'more details', with: question.body
-    click_on 'Ask me now!'
+    click_on 'save question'
 
     expect(page).to have_content 'Your question successfully created.'
     expect(page).to have_content question.title
@@ -30,7 +30,7 @@ feature 'Create question', %q{
     click_on 'Ask a Question'
     fill_in 'Your question', with: 'quest'
     fill_in 'more details', with: 'what?'
-    click_on 'Ask me now!'
+    click_on 'save question'
 
     expect(page).to_not have_content 'Your question successfully created.'
     expect(page).to have_text 'is too short'

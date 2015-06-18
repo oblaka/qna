@@ -7,7 +7,9 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @new_answer = @question.answers.build unless current_user.nil?
+    unless current_user.nil?
+      @new_answer = @question.answers.build
+    end
   end
 
   def new
@@ -51,7 +53,8 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body,
+                                     attachments_attributes: [:id, :file, :_destroy])
   end
 
   def load_question

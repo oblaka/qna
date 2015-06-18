@@ -1,3 +1,9 @@
 = bootstrap_form_for [@question, @new_answer], remote: true do |f|
-  = f.text_area :body, label: 'Type your answer', autofocus:true
-  = f.submit 'Add an answer', class: 'btn btn-success btn-sm'
+  = f.text_area :body, label: 'Type your answer', autofocus: true
+  .attachments
+    = link_to_add_association 'add attachment', f, :attachments,
+        :data => {"association-insertion-method" => "append" },
+         partial: 'questions/attachment_fields', class: 'btn btn-link'
+    = f.fields_for :attachments, layout: :inline do |att|
+      br
+  = f.submit 'Add an answer', class: 'btn btn-success btn-sm', align: 'right'

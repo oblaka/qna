@@ -57,7 +57,13 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    carrierwave (0.10.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
+      mime-types (>= 1.16)
     cliver (0.3.2)
+    cocoon (1.2.6)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -113,7 +119,7 @@ GEM
       cliver (~> 0.3.1)
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
-    rack (1.6.2)
+    rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.2)
@@ -143,17 +149,18 @@ GEM
     rake (10.4.2)
     rdoc (4.2.0)
       json (~> 1.4)
+    remotipart (1.2.1)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
-    rspec-core (3.3.0)
+    rspec-core (3.3.1)
       rspec-support (~> 3.3.0)
     rspec-expectations (3.3.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
-    rspec-mocks (3.3.0)
+    rspec-mocks (3.3.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
-    rspec-rails (3.3.1)
+    rspec-rails (3.3.2)
       actionpack (>= 3.0, < 4.3)
       activesupport (>= 3.0, < 4.3)
       railties (>= 3.0, < 4.3)
@@ -222,6 +229,8 @@ DEPENDENCIES
   bootstrap_form
   byebug
   capybara
+  carrierwave
+  cocoon
   coffee-rails (~> 4.1.0)
   database_cleaner
   devise
@@ -232,6 +241,7 @@ DEPENDENCIES
   pg
   poltergeist
   rails (= 4.2.2)
+  remotipart
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

@@ -1,4 +1,4 @@
-require_relative 'feature_helper'
+require_relative '../feature_helper'
 
 feature 'Create answers', %q{
   In order to help questioner

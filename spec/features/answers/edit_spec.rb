@@ -1,4 +1,4 @@
-require_relative 'feature_helper'
+require_relative '../feature_helper'
 
 feature 'Edit answer', %q{
   In order to fix or improve answer
