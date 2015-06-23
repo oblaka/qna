@@ -1,4 +1,11 @@
 p id= "answer_#{@answer.id}"
   = @answer.body
   - if @answer.user == current_user
-    = link_to 'delete', @answer, method: :delete, class: 'btn btn-danger btn-xs'
+    = link_to 'edit', edit_answer_path(@answer), remote: true, class: 'btn btn-warning btn-xs'
+    '
+    = link_to 'delete', @answer, remote: true, method: :delete, class: 'btn btn-danger btn-xs'
+    '
+    - if @answer.question.user_id == current_user.id && @answer.best == false
+      = link_to 'Mark as Solution', solution_answer_path(@answer), method: :post, remote: true, class: 'btn btn-success btn-xs'
+  - @answer.attachments.each do |att|
+    = link_to att.file.identifier, att.file.url, class: "btn btn-link"

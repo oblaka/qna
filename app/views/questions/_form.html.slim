@@ -1,0 +1,18 @@
+= bootstrap_form_for @question do |f|
+  h3 Edit a question
+  br
+  = f.text_field :title, label: "Your question", autofocus:true
+  = f.text_area :body, label: "more details"
+
+  .attachments
+    = link_to_add_association 'add attachment', f, :attachments,
+        :data => {"association-insertion-method" => "append" },
+         partial: 'attachment_fields', class: 'btn btn-link'
+
+  = f.fields_for :attachments, layout: :inline do |att|
+    = att.check_box :_destroy, label: att.object.title
+
+  = f.submit 'save question', class: 'btn btn-success btn-sm'
+  = '  |  '
+  - unless @question.new_record?
+    = link_to 'Back to question', question_path(@question), class: 'btn btn-primary btn-sm'

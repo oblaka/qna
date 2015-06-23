@@ -1,4 +1,4 @@
-require_relative 'feature_helper'
+require_relative '../feature_helper'
 
 feature 'Mark Answer as Solution', %q{
   In order to

@@ -7,8 +7,9 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params.merge(user: current_user))
     respond_to do |format|
       if @answer.save
-        @new_answer = @question.answers.build(user: current_user)
+        @new_answer = @question.answers.build
         format.js   { render 'create' }
+        format.html   { redirect_to @question, notice: 'Answer create wia HTML' }
       else
         @new_answer = @answer
         format.js   { render 'create_fail' }
@@ -17,38 +18,32 @@ class AnswersController < ApplicationController
   end
 
   def edit
-    respond_to do |format|
-      if owner?
-        format.js   { render 'edit' }
-      else
-        format.js   { redirect_to @answer.question, alert: "It's not your answer!" }
-      end
+    if owner?
+      render 'edit'
+    else
+      redirect_to @answer.question, alert: "It's not your answer!"
     end
   end
 
   def update
-    respond_to do |format|
-      if owner?
-        if @answer.update(answer_params)
-          format.js   { render 'update' }
-        else
-          format.js   { render 'edit' }
-        end
+    if owner?
+      if @answer.update(answer_params)
+        render 'update'
       else
-        format.js   { redirect_to @answer.question, alert: "It's not your answer!" }
+        render 'edit'
       end
+    else
+      redirect_to @answer.question, alert: "It's not your answer!"
     end
   end
 
   def destroy
     @question = @answer.question
-    respond_to do |format|
-      if owner?
-        @answer.destroy
-        format.js   { render 'delete' }
-      else
-        format.js   { redirect_to @question, alert: "It's not your answer!" }
-      end
+    if owner?
+      @answer.destroy
+      render 'delete'
+    else
+      redirect_to @question, alert: "It's not your answer!"
     end
   end
 
@@ -65,7 +60,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, attachments_attributes: [:id, :file, :_destroy])
   end
 
   def load_question

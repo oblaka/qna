@@ -1,0 +1,10 @@
+h2 id= "question_#{@question.id}"
+  = @question.title
+  - if @question.user == current_user
+    = link_to 'edit', edit_question_path(@question), class: 'btn btn-warning btn-xs'
+    = link_to 'delete', @question, method: :delete, class: 'btn btn-danger btn-xs'
+p
+  = @question.body
+  - @question.attachments.each do |att|
+    ul
+      li= link_to att.file.identifier, att.file.url, class: "btn btn-link"

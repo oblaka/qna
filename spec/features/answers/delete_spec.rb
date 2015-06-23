@@ -1,4 +1,4 @@
-require_relative 'feature_helper'
+require_relative '../feature_helper'
 
 feature 'Delete answers', %q{
   In order to keep only actual answers

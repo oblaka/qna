@@ -11,3 +11,6 @@ h2 Answers:
           '
         - if @question.user_id == current_user.id && answer.best == false
           = link_to 'Mark as Solution', solution_answer_path(answer), method: :post, remote: true, class: 'btn btn-success btn-xs'
+      - answer.attachments.each do |att|
+        br
+        = link_to att.file.identifier, att.file.url, class: "btn btn-link"
