@@ -9,5 +9,9 @@ RSpec.describe Question, type: :model do
   it { should validate_presence_of :user }
   it { should belong_to :user }
   it { should have_many :attachments }
+  it { should have_many :votes }
   it { should accept_nested_attributes_for :attachments }
+
+  it_should_behave_like 'votable'
+
 end

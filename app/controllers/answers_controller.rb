@@ -3,6 +3,8 @@ class AnswersController < ApplicationController
   before_action :load_question, only: :create
   before_action :load_answer, only: [:edit, :update, :destroy, :solution]
 
+  include Voting
+
   def create
     @answer = @question.answers.build(answer_params.merge(user: current_user))
     respond_to do |format|

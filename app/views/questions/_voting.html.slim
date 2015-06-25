@@ -1,0 +1,17 @@
+.col-md-1
+  br
+  .vote.text-center
+    = link_to 'good!', good_question_path(@question),
+      method: :post,
+      remote: true,
+      data: { type: :json },
+      class: "btn btn-success btn-xs #{ good_btn_state @question }", id: "good_question_#{@question.id}"
+    br
+    strong id= "rating_#{@question.class.name.downcase}_#{@question.id}"
+      = @question.rating
+    br
+    = link_to 'shit!', shit_question_path(@question),
+      method: :post,
+      remote: true,
+      data: { type: :json },
+      class: "btn btn-success btn-xs #{ shit_btn_state @question }", id: "shit_question_#{@question.id}"

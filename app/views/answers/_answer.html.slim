@@ -1,5 +1,19 @@
-p id= "answer_#{@answer.id}"
+p.vote id= "answer_#{@answer.id}"
   = @answer.body
+  br
+  = link_to '+', good_answer_path(@answer),
+      method: :post,
+      remote: true,
+      data:{type: :json },
+      class: "btn btn-link #{ good_btn_state @answer }", id: "good_answer_#{@answer.id}"
+  strong id= "rating_answer_#{@answer.id}"
+    = @answer.rating
+  = link_to '-', shit_answer_path(@answer),
+    method: :post,
+    remote: true,
+    data:{type: :json },
+    class: "btn btn-link #{ shit_btn_state @answer }", id: "shit_answer_#{@answer.id}"
+
   - if @answer.user == current_user
     = link_to 'edit', edit_answer_path(@answer), remote: true, class: 'btn btn-warning btn-xs'
     '
