@@ -2,80 +2,41 @@ require 'rails_helper'
 
 RSpec.describe Vote, type: :model do
 
+  it { should validate_numericality_of(:rate) }
+  it { should validate_uniqueness_of(:user_id).scoped_to([:votable_id, :votable_type]) }
+  it { is_expected.to callback(:cast).after(:create) }
+  it { is_expected.to callback(:revoke).before(:destroy) }
+  it { should delegate_method(:rating).to(:votable) }
+
   let(:question) { create(:question) }
-  let(:vote) { create(:vote, votable: question) }
-  let(:overall) { create(:vote, votable: question, voter: question, rate: 3) }
+  let!(:exist_vote) { create(:vote, votable: question) }
 
-  describe '#increase' do
-    context 'vote rate is less then 1' do
-      before do
-        vote
-        overall
-      end
-      it "increase vote" do
-        expect { vote.increase }.to change(vote, :rate).by 1
-      end
-      it "increase votable rating" do
-        vote.increase
-        expect { overall.reload }.to change(overall, :rate).by 1
-      end
-      it "returns true" do
-        expect( vote.increase ).to be true
+  describe '#create' do
+    context 'good vote' do
+      it 'increase question rating' do
+        expect { create(:vote, votable: question, rate: 1) }.to change(question, :rating).by 1
       end
     end
-
-    context 'vote rate is 1 or more' do
-      let(:vote) { create(:vote, rate: 1) }
-      it "not increase vote" do
-        expect { vote.increase }.to_not change(vote, :rate)
-      end
-      it "not increase votable rating" do
-        vote.increase
-        expect { overall.reload }.to_not change(overall, :rate)
-      end
-      it "return false" do
-        expect( vote.increase ).to be false
+    context 'shit vote' do
+      it 'decrease question rating' do
+        expect { create(:vote, votable: question, rate: -1) }.to change(question, :rating).by -1
       end
     end
   end
 
-  describe '#decrease' do
-    context 'vote rate is more then -1' do
-      before do
-        vote
-        overall
-      end
-      it "decrease vote" do
-        expect { vote.decrease }.to change(vote, :rate).by -1
-      end
-      it "decrease votable rating" do
-        vote.decrease
-        expect { overall.reload }.to change(overall, :rate).by -1
-      end
-      it "returns true" do
-        expect( vote.decrease ).to be true
+  describe '#destroy' do
+    context 'good vote' do
+      let!(:vote) { create(:vote, votable: question, rate: 1) }
+      it 'decrease question rating' do
+        expect { vote.destroy }.to change(question, :rating).by -1
       end
     end
-
-    context 'vote rate is -1' do
-      let(:vote) { create(:vote, rate: -1) }
-      it "not increase vote" do
-        expect { vote.decrease }.to_not change(vote, :rate)
-      end
-      it "not increase votable rating" do
-        vote.decrease
-        expect { overall.reload }.to_not change(overall, :rate)
-      end
-      it "return false" do
-        expect( vote.decrease ).to be false
+    context 'shit vote' do
+      let!(:vote) { create(:vote, votable: question, rate: -1) }
+      it 'increase question rating' do
+        expect { vote.destroy }.to change(question, :rating).by 1
       end
     end
   end
 
-  describe 'rating' do
-    it "returns overall votes summ" do
-      overall
-      expect(vote.rating).to eq(overall.rate)
-    end
-  end
 end

@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 
   concern :voting do
-    post :good, :shit, on: :member
+    post :good, :shit, :revoke, on: :member
   end
 
   resources :questions, concerns: :voting do

@@ -25,30 +25,47 @@ feature 'Vote for question', %q{
       end
     end
 
-    scenario 'can not vote up twice', js: true do
-      expect(page).to_not have_css("#good_#{answer.class.name.downcase}_#{answer.id}.disabled")
+    scenario 'can not vote twice', js: true do
+      expect(page).to_not have_css("#good_answer_#{answer.id}.disabled")
+      expect(page).to_not have_css("#shit_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#revoke_answer_#{answer.id}.disabled")
       click_on('+')
-      expect(page).to have_css("#good_#{answer.class.name.downcase}_#{answer.id}.disabled")
+      expect(page).to have_css("#good_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#shit_answer_#{answer.id}.disabled")
+      expect(page).to_not have_css("#revoke_answer_#{answer.id}.disabled")
     end
 
-    scenario 'can increase twice after decrease', js: true do
-      within "#rating_#{answer.class.name.downcase}_#{answer.id}" do
+    scenario 'can revoke his vote after vote', js: true do
+      click_on('+')
+      expect(page).to have_css("#good_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#shit_answer_#{answer.id}.disabled")
+      expect(page).to_not have_css("#revoke_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#revoke_answer_#{answer.id}")
+      click_on('X')
+      expect(page).to have_css("#good_answer_#{answer.id}")
+      expect(page).to have_css("#shit_answer_#{answer.id}")
+      expect(page).to_not have_css("#good_answer_#{answer.id}.disabled")
+      expect(page).to_not have_css("#shit_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#revoke_answer_#{answer.id}.disabled")
+    end
+
+    scenario 'can vote after revoke', js: true do
+      within "#rating_answer_#{answer.id}" do
         expect(page).to have_content('0')
       end
       click_on('-')
-      within "#rating_#{answer.class.name.downcase}_#{answer.id}" do
+      within "#rating_answer_#{answer.id}" do
         expect(page).to have_content('-1')
       end
-      expect(page).to have_css("#shit_#{answer.class.name.downcase}_#{answer.id}.disabled")
-      click_on('+')
-      within "#rating_#{answer.class.name.downcase}_#{answer.id}" do
+      expect(page).to have_css("#shit_answer_#{answer.id}.disabled")
+      click_on('X')
+      within "#rating_answer_#{answer.id}" do
         expect(page).to have_content('0')
       end
       click_on('+')
-      within "#rating_#{answer.class.name.downcase}_#{answer.id}" do
+      within "#rating_answer_#{answer.id}" do
         expect(page).to have_content('1')
       end
-      expect(page).to have_css("#good_#{answer.class.name.downcase}_#{answer.id}.disabled")
     end
   end
 
@@ -56,16 +73,18 @@ feature 'Vote for question', %q{
     scenario 'can not vote', js: true do
       sign_in answer.user
       visit question_path answer.question
-      expect(page).to have_css("#good_#{answer.class.name.downcase}_#{answer.id}.disabled")
-      expect(page).to have_css("#shit_#{answer.class.name.downcase}_#{answer.id}.disabled")
+      expect(page).to have_css("#good_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#shit_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#revoke_answer_#{answer.id}.disabled")
     end
   end
 
   context 'unauthenticated user ' do
     scenario 'can not vote', js: true do
       visit question_path answer.question
-      expect(page).to have_css("#good_#{answer.class.name.downcase}_#{answer.id}.disabled")
-      expect(page).to have_css("#shit_#{answer.class.name.downcase}_#{answer.id}.disabled")
+      expect(page).to have_css("#good_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#shit_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#revoke_answer_#{answer.id}.disabled")
     end
   end
 

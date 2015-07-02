@@ -2,12 +2,12 @@ module Voting
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_votable, :load_vote, only: [:good, :shit]
+    before_action :set_votable, only: [:good, :shit, :revoke]
   end
 
   def good
-    if signed_in? && current_user != @votable.user
-      @vote.increase
+    if current_user.id != @votable.user_id
+      @votable.vote_good_by(current_user)
       render 'shared/vote'
     else
       render nothing: true, status: :forbidden
@@ -15,16 +15,17 @@ module Voting
   end
 
   def shit
-    if signed_in? && current_user != @votable.user
-      @vote.decrease
+    if current_user.id != @votable.user_id
+      @votable.vote_shit_by(current_user)
       render 'shared/vote'
     else
       render nothing: true, status: :forbidden
     end
   end
 
-  def load_vote
-    @vote = @votable.vote_for current_user
+  def revoke
+    @votable.vote_revoke_by(current_user)
+    render 'shared/vote'
   end
 
   def set_votable

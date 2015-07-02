@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150624023520) do
+ActiveRecord::Schema.define(version: 20150705203709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20150624023520) do
     t.datetime "updated_at",                  null: false
     t.integer  "user_id"
     t.boolean  "best",        default: false
+    t.integer  "rating",      default: 0
   end
 
   add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
@@ -41,9 +42,10 @@ ActiveRecord::Schema.define(version: 20150624023520) do
   create_table "questions", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "user_id"
+    t.integer  "rating",     default: 0
   end
 
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
@@ -70,16 +72,16 @@ ActiveRecord::Schema.define(version: 20150624023520) do
     t.integer  "rate",         default: 0
     t.integer  "votable_id"
     t.string   "votable_type"
-    t.integer  "voter_id"
-    t.string   "voter_type"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+    t.integer  "user_id"
   end
 
-  add_index "votes", ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id", using: :btree
-  add_index "votes", ["voter_type", "voter_id"], name: "index_votes_on_voter_type_and_voter_id", using: :btree
+  add_index "votes", ["user_id"], name: "index_votes_on_user_id", using: :btree
+  add_index "votes", ["votable_type", "votable_id", "user_id"], name: "index_votes_on_votable_type_and_votable_id_and_user_id", unique: true, using: :btree
 
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
   add_foreign_key "questions", "users"
+  add_foreign_key "votes", "users"
 end

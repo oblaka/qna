@@ -1,4 +1,4 @@
-.col-md-1
+.col-md-2
   br
   .vote.text-center
     = link_to 'good!', good_question_path(@question),
@@ -7,8 +7,13 @@
       data: { type: :json },
       class: "btn btn-success btn-xs #{ good_btn_state @question }", id: "good_question_#{@question.id}"
     br
-    strong id= "rating_#{@question.class.name.downcase}_#{@question.id}"
+    strong id= "rating_question_#{@question.id}"
       = @question.rating
+    = link_to 'revoke', revoke_question_path(@question),
+        method: :post,
+        remote: true,
+        data: { type: :json },
+        class: "btn btn-link #{ revoke_btn_state @question }", id: "revoke_question_#{@question.id}"
     br
     = link_to 'shit!', shit_question_path(@question),
       method: :post,

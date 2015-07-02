@@ -1,41 +1,24 @@
 class Vote < ActiveRecord::Base
   belongs_to :votable, polymorphic: true
-  belongs_to :voter, polymorphic: true
+  belongs_to :user
 
-  validates :votable, :voter, presence: true
+  validates :votable, :user, presence: true
+  validates :user_id, uniqueness: { scope: [:votable_id, :votable_type] }
+  validates :rate, numericality: { only_integer: true }
 
   delegate :rating, to: :votable
 
-  def increase
-    if rate < 1
-      transaction do
-        self.increment! :rate
-        overall.increment! :rate
-      end
-    else
-      false
-    end
+  after_create :cast
+  before_destroy :revoke
+
+  private
+
+  def cast
+    votable.increment! :rating, rate
   end
 
-  def decrease
-    if rate > -1
-      transaction do
-        self.decrement! :rate
-        overall.decrement! :rate
-      end
-    else
-      false
-    end
-  end
-
-  def rating
-    overall.rate
-  end
-
-  protected
-
-  def overall
-    Vote.find_or_initialize_by(votable: votable, voter: votable)
+  def revoke
+    votable.decrement! :rating, rate
   end
 
 end
