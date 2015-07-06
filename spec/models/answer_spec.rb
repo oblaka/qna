@@ -14,6 +14,7 @@ RSpec.describe Answer, type: :model do
   let!(:answer1) { create(:answer, question: question, best: false) }
   let!(:answer2) { create(:answer, question: question, best: true) }
 
+  it_should_behave_like 'commentable'
   it_should_behave_like 'votable'
 
   describe 'is_solution' do

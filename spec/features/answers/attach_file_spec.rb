@@ -48,7 +48,7 @@ feature 'Attach file to answer', %q{
       inputs[1].set("#{Rails.root}/spec/rails_helper.rb")
       click_on 'Add an answer'
     end
-
+    visit question_path(question)
     within "#answer_1" do
       click_on "edit"
       check 'spec_helper.rb'

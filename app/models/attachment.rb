@@ -6,6 +6,8 @@ class Attachment < ActiveRecord::Base
 
   validates :file, presence: true
 
+  delegate :identifier, :url, to: :file
+
   def title
     file.identifier unless file.nil?
   end

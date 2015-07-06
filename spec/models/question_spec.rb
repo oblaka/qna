@@ -12,6 +12,7 @@ RSpec.describe Question, type: :model do
   it { should have_many :votes }
   it { should accept_nested_attributes_for :attachments }
 
+  it_should_behave_like 'commentable'
   it_should_behave_like 'votable'
 
 end

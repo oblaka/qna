@@ -18,8 +18,10 @@ Rails.application.routes.draw do
     post :good, :shit, :revoke, on: :member
   end
 
-  resources :questions, concerns: :voting do
-    resources :answers, concerns: :voting, shallow: true, except: :show do
+  resources :questions, concerns: [ :voting ] do
+    resources :comments, only: [:new, :create], defaults: { commentable: 'questions' }
+    resources :answers, concerns: [ :voting ], shallow: true, except: :show do
+      resources :comments, only: [:new, :create], defaults: { commentable: 'answers' }
       post :solution, on: :member
     end
   end

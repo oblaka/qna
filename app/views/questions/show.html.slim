@@ -1,8 +1,10 @@
 = render 'question'
-br
 
 .answers
-  = render 'questions/answers'
+  = render 'answers/list'
 
 - if @new_answer
   = render 'answers/form'
+
+= subscribe_to "/question/#{@question.id}/answers"
+= subscribe_to "/question/#{@question.id}/comments"

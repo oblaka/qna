@@ -1,8 +1,10 @@
 br
-table class="table table-hover"
+table class="table table-hover" id='questions'
   - @questions.each do |question|
     tr
       td = link_to question.title, question_path(question)
       td = question.body
 
 = link_to 'Ask a Question', new_question_path, class: 'btn btn-primary'
+
+= subscribe_to "/questions"

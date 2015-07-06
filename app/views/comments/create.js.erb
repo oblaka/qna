@@ -1,0 +1,13 @@
+<% if @comment.persisted? %>
+  $('.alert').html('<div class="alert alert-success">Your comment added successfully.</div>');
+  <% question_id = @commentable.is_a?(Question) ? @commentable.id : @commentable.question_id %>
+
+  <% publish_to "/question/#{question_id}/comments" do %>
+    $('#<%= div_comments_id(@commentable) %>').append('<%= j render 'comments/comment' %>');
+  <% end %>
+
+  $('#<%= "new_comment_form_#{@commentable.class.name.underscore}_#{@commentable.id}" %>').remove();
+  $('#<%= "comments_#{@commentable.class.name.underscore}_#{@commentable.id}" %>').append('<%= j comment_link @commentable %>');
+  <% else %>
+    $('#<%= "new_comment_form_#{@commentable.class.name.underscore}_#{@commentable.id}" %>').html('<%= j render 'comments/form', { commentable: @commentable, comment: @comment } %>');
+<% end %>

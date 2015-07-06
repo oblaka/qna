@@ -1,4 +1,4 @@
-.question id= "question_#{@question.id}"
+.question id= "question_#{@question.id}" data={question_id: "#{@question.id}", author: "#{@question.user_id == current_user.id if signed_in?}"}
   .row
     = render 'voting'
     .col-md-7
@@ -11,3 +11,7 @@
         - @question.attachments.each do |att|
           ul
             li= link_to att.file.identifier, att.file.url, class: "btn btn-link"
+      .comments id= div_comments_id(@question)
+        - @question.comments.each do |comment|
+          p= comment.body
+        = comment_link @question if signed_in?

@@ -1,9 +1,3 @@
 $('.alert').html('<div class="alert alert-success">Your answer successfully created.</div>');
 
-<% if remotipart_submitted? %>
-  $('.new_answer').html('<%= j "#{render 'form'}" %>');
-  $('.answers').append('<%= j "#{render 'answer'}" %>');
-<% else %>
-  $('.new_answer').html('<%= j render 'form' %>');
-  $('.answers').append('<%= j render 'answer' %>');
-<% end %>
+$('.new_answer').html('<%= j render 'form' %>');

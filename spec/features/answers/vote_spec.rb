@@ -1,7 +1,7 @@
 require_relative '../feature_helper'
 
-feature 'Vote for question', %q{
-  In order to affect on question rating
+feature 'Vote for answer', %q{
+  In order to affect on answer rating
   As an authenticated user
   I can increase or decrease rating
 } do
@@ -82,9 +82,9 @@ feature 'Vote for question', %q{
   context 'unauthenticated user ' do
     scenario 'can not vote', js: true do
       visit question_path answer.question
-      expect(page).to have_css("#good_answer_#{answer.id}.disabled")
-      expect(page).to have_css("#shit_answer_#{answer.id}.disabled")
-      expect(page).to have_css("#revoke_answer_#{answer.id}.disabled")
+      expect(page).to_not have_css("#good_answer_#{answer.id}")
+      expect(page).to_not have_css("#shit_answer_#{answer.id}")
+      expect(page).to_not have_css("#revoke_answer_#{answer.id}")
     end
   end
 

@@ -1,0 +1,5 @@
+= bootstrap_form_for [commentable, @comment || commentable.comments.new],
+ html: { id: "new_comment_form_#{commentable.class.name.underscore}_#{commentable.id}" },
+ layout: :inline, remote: true do |new_comment_form|
+  = new_comment_form.text_field :body, hide_label: true
+  = new_comment_form.submit 'add comment', class: 'btn btn-success btn-sm'

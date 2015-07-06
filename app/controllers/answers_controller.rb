@@ -9,6 +9,10 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params.merge(user: current_user))
     respond_to do |format|
       if @answer.save
+        PrivatePub.publish_to "/question/#{@question.id}/answers", answer: {
+          id: @answer.id, body: @answer.body,
+          attachments: @answer.attachments.map { |att| { name: att.identifier, url: att.url} }
+        }.to_json
         @new_answer = @question.answers.build
         format.js   { render 'create' }
         format.html   { redirect_to @question, notice: 'Answer create wia HTML' }

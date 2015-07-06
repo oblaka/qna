@@ -15,7 +15,7 @@ feature 'Create answers', %q{
     expect(page).to have_content 'Type your answer'
     fill_in 'Type your answer', with: "You must going to sleep in this situation"
     click_on 'Add an answer'
-    # sleep(1)
+    sleep(1)
     within '.answers' do
       expect(page).to have_content "You must going to sleep in this situation"
     end

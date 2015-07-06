@@ -1,0 +1,22 @@
+h2 Answers:
+- @question.answers.solution_first.each do |answer|
+  br
+  - if answer.persisted?
+    p id= "answer_#{answer.id}"
+      = answer.body
+      - if signed_in?
+        - if answer.user_id == current_user.id
+          = link_to 'edit', edit_answer_path(answer), remote: true, class: 'btn btn-warning btn-xs'
+          '
+          = link_to 'delete', answer_path(answer), remote: true, method: :delete, class: 'btn btn-danger btn-xs'
+          '
+        - if @question.user_id == current_user.id && answer.best == false
+          = link_to 'Mark as Solution', solution_answer_path(answer), method: :post, remote: true, class: 'btn btn-success btn-xs'
+        = render 'answers/answer_voting', answer: answer
+      attachments id= "attachments_answer_#{answer.id}"
+        - answer.attachments.each do |att|
+          = link_to att.file.identifier, att.file.url, class: "btn btn-link"
+    .row
+      .comments.col-md-5.col-md-offset-1 id= div_comments_id(answer)
+        - answer.comments.each do |comment|
+          p= comment.body
