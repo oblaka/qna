@@ -37,7 +37,6 @@ feature 'Attach file to question', %q{
     inputs[0].set("#{Rails.root}/spec/spec_helper.rb")
     inputs[1].set("#{Rails.root}/spec/rails_helper.rb")
     click_on 'save question'
-    save_and_open_page
     click_on 'edit'
     check 'spec_helper.rb'
     click_on 'save question'

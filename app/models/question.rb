@@ -1,4 +1,7 @@
 class Question < ActiveRecord::Base
+
+  include Votable
+
   belongs_to :user
   has_many :answers, dependent: :destroy
   has_one :solution, -> { where best: true }, class_name: "Answer"

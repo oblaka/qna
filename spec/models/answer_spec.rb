@@ -14,11 +14,14 @@ RSpec.describe Answer, type: :model do
   let!(:answer1) { create(:answer, question: question, best: false) }
   let!(:answer2) { create(:answer, question: question, best: true) }
 
+  it_should_behave_like 'votable'
+
   describe 'is_solution' do
     it 'set answer #best to true' do
       answer1.is_solution
       expect(answer1.best).to eq true
     end
+
     it "set another answer question answers best to false" do
       answer1.is_solution
       answer2.reload

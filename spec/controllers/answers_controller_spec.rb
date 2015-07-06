@@ -6,6 +6,8 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:user) { create(:user) }
 
+  it_behaves_like 'voting'
+
   describe 'POST #solution' do
     context 'question owner try set solution' do
       let!(:answer1) { create(:answer, question: question, best: false) }
@@ -217,6 +219,40 @@ RSpec.describe AnswersController, type: :controller do
       it 'redirect to sign_in' do
         delete :destroy, id: answer, format: :js
         expect(response.status).to eq 401
+      end
+    end
+  end
+
+  describe 'POST #good' do
+    context 'authorized user' do
+      it 'response ok' do
+        sign_in(user)
+        answer
+        post :good, id: answer, format: :json
+        expect(response).to have_http_status(200)
+      end
+    end
+    context 'unauthorized user' do
+      it 'response forbidden' do
+        post :good, id: answer, format: :json
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
+
+  describe 'POST #shit' do
+    context 'authorized user' do
+      it 'response ok' do
+        sign_in(user)
+        answer
+        post :shit, id: answer, format: :json
+        expect(response).to have_http_status(200)
+      end
+    end
+    context 'unauthorized user' do
+      it 'response forbidden' do
+        post :shit, id: answer, format: :json
+        expect(response).to have_http_status(401)
       end
     end
   end

@@ -7,6 +7,8 @@ RSpec.describe QuestionsController, type: :controller do
   let(:invalid_question) { new(:invalid_question) }
   let(:questions) { create_list(:question, 2) }
 
+  it_behaves_like 'voting'
+
   describe 'GET #index' do
     before { get :index }
     it 'populates array of questions' do
