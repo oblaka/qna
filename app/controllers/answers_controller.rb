@@ -2,65 +2,32 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: :create
   before_action :load_answer, only: [:edit, :update, :destroy, :solution]
+  before_action :permission_check, only: [:edit, :update, :destroy, :solution]
+  after_action :publish_answer, only: :create
 
+  respond_to :js
   include Voting
 
   def create
-    @answer = @question.answers.build(answer_params.merge(user: current_user))
-    respond_to do |format|
-      if @answer.save
-        PrivatePub.publish_to "/question/#{@question.id}/answers", answer: {
-          id: @answer.id, body: @answer.body,
-          attachments: @answer.attachments.map { |att| { name: att.identifier, url: att.url} }
-        }.to_json
-        @new_answer = @question.answers.build
-        format.js   { render 'create' }
-        format.html   { redirect_to @question, notice: 'Answer create wia HTML' }
-      else
-        @new_answer = @answer
-        format.js   { render 'create_fail' }
-      end
-    end
+    @answer = @question.answers.create( answer_params.merge( user: current_user ))
   end
 
   def edit
-    if owner?
-      render 'edit'
-    else
-      redirect_to @answer.question, alert: "It's not your answer!"
-    end
   end
 
   def update
-    if owner?
-      if @answer.update(answer_params)
-        render 'update'
-      else
-        render 'edit'
-      end
-    else
-      redirect_to @answer.question, alert: "It's not your answer!"
-    end
+    @answer.update(answer_params)
+    respond_with @answer
   end
 
   def destroy
     @question = @answer.question
-    if owner?
-      @answer.destroy
-      render 'delete'
-    else
-      redirect_to @question, alert: "It's not your answer!"
-    end
+    respond_with @answer.destroy
   end
 
   def solution
-    @question = @answer.question
-    if @question.user_id == current_user.id
-      @answer.is_solution
-      @question.reload
-    else
-      redirect_to @question, alert: "It's not your question!"
-    end
+    @answer.is_solution
+    respond_with @answer
   end
 
   private
@@ -77,8 +44,17 @@ class AnswersController < ApplicationController
     @answer = Answer.find params[:id]
   end
 
-  def owner?
-    @answer.user_id == current_user.id
+  def permission_check
+    checked_object = action_name == 'solution' ? @answer.question : @answer
+    return if checked_object.user_id == current_user.id
+    render status: :forbidden
+  end
+
+  def publish_answer
+    PrivatePub.publish_to "/question/#{@question.id}/answers", answer: {
+      id: @answer.id, body: @answer.body,
+      attachments: @answer.attachments.map { |att| { name: att.identifier, url: att.url} }
+    }.to_json if @answer.valid?
   end
 
 end

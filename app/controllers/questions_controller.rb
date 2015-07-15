@@ -5,17 +5,15 @@ class QuestionsController < ApplicationController
   include Voting
 
   def index
-    @questions = Question.all
+    respond_with( @questions = Question.all )
   end
 
   def show
-    unless current_user.nil?
-      @new_answer = @question.answers.build
-    end
+    respond_with @question
   end
 
   def new
-    @question = current_user.questions.build
+    respond_with( @question = current_user.questions.build )
   end
 
   def edit
@@ -23,24 +21,16 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = current_user.questions.build(question_params)
-    if @question.save
-      PrivatePub.publish_to "/questions", question: @question.to_json
-      redirect_to @question, notice: 'Your question successfully created.'
-    else
-      render :new
-    end
+    respond_with( @question = current_user.questions.create(question_params) )
+    PrivatePub.publish_to "/questions", question: @question.to_json if @question.valid?
   end
 
   def update
     unless owner?
       redirect_to @question, alert: 'It is not yours question!'
     else
-      if @question.update(question_params)
-        redirect_to @question, notice: 'Your question successfully updated.'
-      else
-        render :edit
-      end
+      @question.update(question_params)
+      respond_with @question
     end
   end
 
@@ -48,8 +38,7 @@ class QuestionsController < ApplicationController
     unless owner?
       redirect_to @question, alert: 'It is not yours question!'
     else
-      @question.destroy
-      redirect_to questions_path, notice: 'Your question successfully deleted.'
+      respond_with @question.destroy
     end
   end
 

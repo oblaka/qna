@@ -19,7 +19,7 @@ feature 'Create question', %q{
     fill_in 'more details', with: question.body
     click_on 'save question'
 
-    expect(page).to have_content 'Your question successfully created.'
+    expect(page).to have_content 'Question was successfully created.'
     expect(page).to have_content question.title
   end
 
@@ -32,7 +32,7 @@ feature 'Create question', %q{
     fill_in 'more details', with: 'what?'
     click_on 'save question'
 
-    expect(page).to_not have_content 'Your question successfully created.'
+    expect(page).to have_content 'Question could not be created.'
     expect(page).to have_text 'is too short'
     find_field('Your question').value == 'quest'
   end

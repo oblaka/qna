@@ -1,2 +1,0 @@
-$('#<%= "new_comment_#{@commentable.class.name.underscore}_#{@commentable.id}" %>').remove();
-$('#<%= "comments_#{@commentable.class.name.underscore}_#{@commentable.id}" %>').append('<%= j render 'comments/form', { commentable: @commentable, comment: @comment } %>');

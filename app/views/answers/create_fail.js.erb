@@ -1,7 +1,0 @@
-$('.alert').html('');
-
-<% if remotipart_submitted? %>
-  $('.new_answer').html('<%= j "#{render 'form'}" %>');
-<% else %>
-  $('.new_answer').html('<%= j render 'form' %>');
-<% end %>

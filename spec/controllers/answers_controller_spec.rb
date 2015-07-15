@@ -34,11 +34,8 @@ RSpec.describe AnswersController, type: :controller do
       it 'assign requested answer to @answer' do
         expect(assigns(:answer)).to eq answer
       end
-      it 'show alert' do
-        expect(flash[:alert]).to have_content "It's not your question!"
-      end
-      it 'redirects to question show view' do
-        expect(response).to redirect_to question_path(answer.question)
+      it 'response is forbidden status' do
+        expect(response.status).to eq 403
       end
     end
     context 'unauthenticated try set solution' do
@@ -94,6 +91,10 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, question_id: question.id, answer: attributes_for(:answer),format: :js }
         .to_not change(Answer, :count)
       end
+      it 'response is unauthorized status' do
+        post :create, question_id: question.id, answer: attributes_for(:answer),format: :js
+        expect(response.status).to eq 401
+      end
     end
   end
 
@@ -119,11 +120,8 @@ RSpec.describe AnswersController, type: :controller do
       it 'assign requested answer to @answer' do
         expect(assigns(:answer)).to eq answer
       end
-      it 'show alert' do
-        expect(flash[:alert]).to have_content "It's not your answer!"
-      end
-      it 'redirects to question show view' do
-        expect(response).to redirect_to question_path(answer.question)
+      it 'response is forbidden status' do
+        expect(response.status).to eq 403
       end
     end
 
@@ -164,11 +162,8 @@ RSpec.describe AnswersController, type: :controller do
         sign_in(user)
         patch :update, id: answer, answer: { body: 'new fucking body' }, format: :js
       end
-      it 'redirects to answer question' do
-        expect(response).to redirect_to question_path(answer.question)
-      end
-      it 'show alert' do
-        expect(flash[:alert]).to have_content "It's not your answer!"
+      it 'response is forbidden status' do
+        expect(response.status).to eq 403
       end
       it 'not change answer attributes' do
         answer.reload
@@ -187,7 +182,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'render js delete' do
         answer
         delete :destroy, id: answer, format: :js
-        expect(response).to render_template :delete
+        expect(response).to render_template :destroy
       end
     end
 
@@ -196,18 +191,13 @@ RSpec.describe AnswersController, type: :controller do
         sign_in user
         answer
       end
+
+      it 'response is forbidden status' do
+        delete :destroy, id: answer, format: :js
+        expect(response.status).to eq 403
+      end
       it 'can not delete answer' do
         expect { delete :destroy, id: answer, format: :js }.to_not change(Answer, :count)
-      end
-
-      it 'redirects to question show view' do
-        delete :destroy, id: answer, format: :js
-        expect(response).to redirect_to question_path(answer.question)
-      end
-
-      it 'alert about ownership' do
-        delete :destroy, id: answer, format: :js
-        expect(flash[:alert]).to have_content "It's not your answer!"
       end
     end
 

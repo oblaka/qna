@@ -1,4 +1,4 @@
-= bootstrap_form_for [@question, @new_answer], remote: true do |f|
+= bootstrap_form_for [ question, answer || question.answers.build ], remote: true do |f|
   = f.text_area :body, label: 'Type your answer', autofocus: true
   .attachments
     = link_to_add_association 'add attachment', f, :attachments,

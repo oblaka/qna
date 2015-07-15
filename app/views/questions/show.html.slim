@@ -1,10 +1,10 @@
 = render 'question'
 
 .answers
-  = render 'answers/list'
+  = render 'answers/list', question: @question
 
-- if @new_answer
-  = render 'answers/form'
+- if signed_in?
+  = render 'answers/form', question: @question, answer: nil
 
 = subscribe_to "/question/#{@question.id}/answers"
 = subscribe_to "/question/#{@question.id}/comments"

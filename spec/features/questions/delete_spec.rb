@@ -15,7 +15,7 @@ feature 'Delete question', %q{
     within "#question_#{question.id}" do
       click_on "delete"
     end
-    expect(page).to have_content 'Your question successfully deleted.'
+    expect(page).to have_content 'Question was successfully destroyed.'
   end
 
   scenario 'non-author can not delete question on show' do

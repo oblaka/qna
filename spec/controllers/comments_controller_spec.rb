@@ -52,47 +52,4 @@ RSpec.describe CommentsController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    context 'question' do
-      context 'authenticated user' do
-        before do
-          sign_in user
-          xhr :get, :new, question_id: question, commentable: 'questions', format: :js
-        end
-        it 'assigns new comment to @comment' do
-          expect(assigns(:comment)).to be_a_new(Comment)
-        end
-        it 'response ok' do
-          expect(response).to have_http_status(200)
-        end
-      end
-      context 'unauthenticated user' do
-        it 'response forbidden' do
-          xhr :get, :new, question_id: question, commentable: 'questions', format: :js
-          expect(response).to have_http_status(401)
-        end
-      end
-    end
-    context 'answer' do
-      context 'authenticated user' do
-        before do
-          sign_in user
-          xhr :get, :new, answer_id: answer, commentable: 'answers', format: :js
-        end
-        it 'assigns new comment to @comment' do
-          expect(assigns(:comment)).to be_a_new(Comment)
-        end
-        it 'response ok' do
-          expect(response).to have_http_status(200)
-        end
-      end
-      context 'unauthenticated user' do
-        it 'response forbidden' do
-          xhr :get, :new, answer_id: answer, commentable: 'answers', format: :js
-          expect(response).to have_http_status(401)
-        end
-      end
-    end
-  end
-
 end

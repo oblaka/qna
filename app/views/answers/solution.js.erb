@@ -1,2 +1,2 @@
-$('.answers').html('<%= escape_javascript render 'answers/list' %>');
+$('.answers').html('<%= escape_javascript render 'answers/list', question: @answer.question %>');
 $('.alert').html('<div class="alert alert-success">The best answer is chosen!</div>');

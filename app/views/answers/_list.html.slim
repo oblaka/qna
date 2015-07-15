@@ -1,5 +1,5 @@
 h2 Answers:
-- @question.answers.solution_first.each do |answer|
+- question.answers.solution_first.each do |answer|
   br
   - if answer.persisted?
     p id= "answer_#{answer.id}"
@@ -10,7 +10,7 @@ h2 Answers:
           '
           = link_to 'delete', answer_path(answer), remote: true, method: :delete, class: 'btn btn-danger btn-xs'
           '
-        - if @question.user_id == current_user.id && answer.best == false
+        - if question.user_id == current_user.id && answer.best == false
           = link_to 'Mark as Solution', solution_answer_path(answer), method: :post, remote: true, class: 'btn btn-success btn-xs'
         = render 'answers/answer_voting', answer: answer
       attachments id= "attachments_answer_#{answer.id}"

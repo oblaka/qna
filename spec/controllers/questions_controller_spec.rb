@@ -35,9 +35,6 @@ RSpec.describe QuestionsController, type: :controller do
         sign_in user
         get :show, id: question
       end
-      it 'assigns a new Answer to @new_answer' do
-        expect(assigns(:new_answer)).to be_a_new(Answer)
-      end
     end
 
     context 'non-authenticated user' do
@@ -107,7 +104,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 'show success notice' do
         post :create, question: attributes_for(:question)
-        expect(flash[:notice]).to have_content 'Your question successfully created.'
+        expect(flash[:notice]).to have_content 'Question was successfully created.'
       end
     end
     context 'invalid question params' do
@@ -141,7 +138,7 @@ RSpec.describe QuestionsController, type: :controller do
         end
         it 'show notice' do
           patch :update, id: question, question: { title: 'new title', body: 'new large body' }
-          expect(flash[:notice]).to have_content 'Your question successfully updated.'
+          expect(flash[:notice]).to have_content 'Question was successfully updated.'
         end
       end
       context 'invalid question params' do

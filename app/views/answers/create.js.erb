@@ -1,3 +1,11 @@
-$('.alert').html('<div class="alert alert-success">Your answer successfully created.</div>');
-
-$('.new_answer').html('<%= j render 'form' %>');
+<% if @answer.errors.present? %>
+  $('.alert').html('');
+  <% if remotipart_submitted? %>
+    $('.new_answer').html('<%= j "#{render 'form, question: @question, answer: @answer'}" %>');
+  <% else %>
+    $('.new_answer').html('<%= j render 'form', question: @question, answer: @answer %>');
+  <% end %>
+<% else %>
+  $('.alert').html('<div class="alert alert-success">Your answer successfully created.</div>');
+  $('.new_answer').html('<%= j render 'form', question: @question, answer: nil %>');
+<% end %>
