@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
 
 
-  devise_for :users
+  devise_for :users, controllers: { confirmations: 'confirmations',
+                                    omniauth_callbacks: 'omniauth_callbacks' }
+  devise_scope :user do
+    post 'confirm_email', to: 'omniauth_callbacks#confirm_email'
+    authenticate :user do
+      get 'profile', to: 'omniauth_callbacks#profile'#, as: :authenticated_root
+    end
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

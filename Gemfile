@@ -34,7 +34,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'thin'
 gem 'private_pub'
-gem "responders"
+gem 'responders'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+gem 'omniauth-vkontakte'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -64,6 +68,7 @@ group :development, :test do
   gem 'shoulda-matchers', require: false
   gem 'shoulda-callback-matchers'
   gem 'capybara'
+  gem 'capybara-email'
   gem 'poltergeist'
   gem 'launchy'
   gem 'database_cleaner'

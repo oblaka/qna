@@ -1,0 +1,5 @@
+h1 = 'Enter email to finish your registration'
+
+= bootstrap_form_for @user, url: :confirm_email, layout: :inline do |f|
+  = f.text_field :email, autofocus: true, hide_label: true
+  = f.submit 'confirm email', class: 'btn btn-success btn-sm'

@@ -1,0 +1,10 @@
+h1 You must confirm email first!
+h4 What if somebody try enter your email?
+
+= bootstrap_form_for :user, url: user_confirmation_path, layout: :inline do |f|
+  - @email ||= nil
+  = f.text_field :email, value: @email, hide_label: true
+  = f.submit 'Resend confirmation instructions', class: 'btn btn-success btn-sm'
+
+br
+= render "devise/shared/links"

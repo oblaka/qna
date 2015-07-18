@@ -11,4 +11,11 @@ module FeatureMacros
     click_on 'Logout'
   end
 
+  def auth_with(provider, email = nil)
+    hash = OmniAuth::AuthHash.new({ provider: provider.to_s, uid: '12345',
+                                    info: { name: 'John Doe' }
+                                    })
+    hash.info.merge!( email: email ) if email
+    OmniAuth.config.mock_auth[provider] = hash
+  end
 end

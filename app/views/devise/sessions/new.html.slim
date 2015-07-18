@@ -1,0 +1,8 @@
+= bootstrap_form_for :user, url: user_session do |f|
+  - @email ||= nil
+  = f.text_field :email, value: @email
+  = f.text_field :password
+  = f.submit 'Log in', class: 'btn btn-success btn-sm'
+
+br
+= render "devise/shared/links"

@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'capybara/poltergeist'
+require 'capybara/email/rspec'
 RSpec.configure do |config|
 
   Capybara.javascript_driver = :poltergeist
@@ -28,3 +29,5 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 end
+
+OmniAuth.config.test_mode = true

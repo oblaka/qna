@@ -1,0 +1,15 @@
+h2 = "Hello, #{@user.email}!"
+
+- if @user.auths.any?
+  h4 = 'You already have some authorizations:'
+
+- @user.auths.each do |auth|
+  p
+    = auth.provider
+    br
+    = auth.uid
+
+- if devise_mapping.omniauthable?
+  h4 = 'You always can add another authorization for future:'
+  - resource_class.omniauth_providers.each do |provider|
+    = link_to "Add #{provider.to_s.titleize} authorization", omniauth_authorize_path(resource_name, provider), class: "btn btn-link"
