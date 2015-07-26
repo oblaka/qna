@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Mark Answer as Solution', %q{
+feature 'Mark Answer as Solution', '
   In order to
   As an question author
   I can mark answer as solution
-} do
-
+' do
   given(:question) { create(:question) }
   given(:another_user) { create(:user) }
   given!(:answer1) { create(:answer1, question: question) }
@@ -48,7 +47,6 @@ feature 'Mark Answer as Solution', %q{
         within "#answer_#{answer1.id}" do
           expect(page).to_not have_link('Mark as Solution')
         end
-
       end
     end
   end

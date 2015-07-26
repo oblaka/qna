@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Create answers', %q{
+feature 'Create answers', '
   In order to help questioner
   As an authenticated user
   I can create answer
-} do
-
+' do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
@@ -13,11 +12,11 @@ feature 'Create answers', %q{
     sign_in user
     visit question_path question
     expect(page).to have_content 'Type your answer'
-    fill_in 'Type your answer', with: "You must going to sleep in this situation"
+    fill_in 'Type your answer', with: 'You must going to sleep in this situation'
     click_on 'Add an answer'
     sleep(1)
     within '.answers' do
-      expect(page).to have_content "You must going to sleep in this situation"
+      expect(page).to have_content 'You must going to sleep in this situation'
     end
     expect(page).to have_content 'Your answer successfully created.'
     find_field('Type your answer').value == ''
@@ -30,7 +29,7 @@ feature 'Create answers', %q{
     fill_in 'Type your answer', with: 'RTFM'
     click_on 'Add an answer'
     expect(page).to have_content 'is too short'
-    find_field('Type your answer').value == 'RTFM'
+    expect(find_field('Type your answer').value).to eq 'RTFM'
     expect(page).to_not have_content 'Your answer successfully created.'
     within '.answers' do
       expect(page).to_not have_content 'RTFM'
@@ -42,5 +41,4 @@ feature 'Create answers', %q{
     expect(page).to_not have_content 'Type your answer'
     expect(page).to have_content 'Sign in'
   end
-
 end

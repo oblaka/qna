@@ -14,4 +14,4 @@
       .comments id= div_comments_id(@question)
         - @question.comments.each do |comment|
           p= comment.body
-        = comment_link @question if signed_in?
+        = comment_link @question if policy(Comment).create?

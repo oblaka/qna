@@ -20,5 +20,4 @@ class Vote < ActiveRecord::Base
   def revoke
     votable.decrement! :rating, rate
   end
-
 end

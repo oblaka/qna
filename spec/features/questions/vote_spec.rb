@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Vote for question', %q{
+feature 'Vote for question', '
   In order to affect on question rating
   As an authenticated user
   I can increase or decrease rating
-} do
-
+' do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question) }
@@ -99,5 +98,4 @@ feature 'Vote for question', %q{
       expect(page).to have_css("#revoke_question_#{question.id}.disabled")
     end
   end
-
 end

@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Email Authentication', %q{
+feature 'Email Authentication', '
   In order to authenticate
   As an registered user
   I can sign in and logout
-} do
-
+' do
   given(:user) { create(:user) }
   given(:new_user) { build(:user) }
 
@@ -32,7 +31,7 @@ feature 'Email Authentication', %q{
       expect(page).to have_content 'Logout'
     end
 
-    scenario "Registered user can sign in" do
+    scenario 'Registered user can sign in' do
       sign_in(user)
       expect(page).to have_content 'Signed in successfully.'
       expect(page).to have_content 'Logout'
@@ -45,5 +44,4 @@ feature 'Email Authentication', %q{
       expect(current_path).to eq(root_path)
     end
   end
-
 end

@@ -13,33 +13,28 @@ class QuestionsController < ApplicationController
   end
 
   def new
-    respond_with( @question = current_user.questions.build )
+    @question = current_user.questions.build
+    authorize Question
+    respond_with( @question )
   end
 
   def edit
-    redirect_to questions_path, notice: 'It is not yours question!' unless owner?
   end
 
   def create
-    respond_with( @question = current_user.questions.create(question_params) )
-    PrivatePub.publish_to "/questions", question: @question.to_json if @question.valid?
+    @question = current_user.questions.create(question_params)
+    authorize @question
+    respond_with( @question )
+    PrivatePub.publish_to '/questions', question: @question.to_json if @question.valid?
   end
 
   def update
-    unless owner?
-      redirect_to @question, alert: 'It is not yours question!'
-    else
-      @question.update(question_params)
-      respond_with @question
-    end
+    @question.update(question_params)
+    respond_with @question
   end
 
   def destroy
-    unless owner?
-      redirect_to @question, alert: 'It is not yours question!'
-    else
-      respond_with @question.destroy
-    end
+    respond_with @question.destroy
   end
 
   private
@@ -51,10 +46,6 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.find params[:id]
+    authorize @question
   end
-
-  def owner?
-    @question.user_id == current_user.id
-  end
-
 end

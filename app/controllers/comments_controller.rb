@@ -1,11 +1,11 @@
 class CommentsController < ApplicationController
-
   before_action :authenticate_user!
   before_action :set_commentable
 
   respond_to :js
 
   def create
+    authorize Comment
     @comment = @commentable.comments.create( comment_params.merge( user: current_user ))
     respond_with @comment
   end
@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
 
   def set_commentable
     @commentable = commentable_name.classify
-    .constantize.find(params["#{commentable_name.singularize}_id".to_sym])
+                   .constantize.find(params["#{commentable_name.singularize}_id".to_sym])
   end
 
   def commentable_name
@@ -24,5 +24,4 @@ class CommentsController < ApplicationController
   def comment_params
     params.require(:comment).permit(:body)
   end
-
 end

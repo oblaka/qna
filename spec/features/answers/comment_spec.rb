@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Commenting answer', %q{
+feature 'Commenting answer', '
   In order to share my opinion
   As an authenticated user
   I can add comments to answer
-} do
-
+' do
   given(:user) { create(:user) }
   given(:answer) { create(:answer) }
 
@@ -33,5 +32,4 @@ feature 'Commenting answer', %q{
       end
     end
   end
-
 end

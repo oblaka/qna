@@ -1,15 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe OmniauthCallbacksController, type: :controller do
-
   before do
-    request.env["devise.mapping"] = Devise.mappings[:user]
+    request.env['devise.mapping'] = Devise.mappings[:user]
     request.env['omniauth.auth'] = auth_hash
   end
   let( :user ) { create :user, email: 'new@user.com' }
   let( :another_user ) { create :user }
-  let!( :auth_hash ) { OmniAuth::AuthHash.new( provider: 'facebook', uid: '123456',
-                                               info: { email: 'new@user.com' } ) }
+  let!( :auth_hash ) do
+    OmniAuth::AuthHash.new( provider: 'facebook', uid: '123456',
+                            info: { email: 'new@user.com' } )
+  end
 
   describe 'confirm_email' do
     context 'user with email not exist' do
@@ -27,7 +28,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
       context 'and already confirmed' do
         before { user }
         it 'not change users in db' do
-          expect { post :confirm_email, user: {email: user.email} }.to_not change( User, :count )
+          expect { post :confirm_email, user: { email: user.email } }.to_not change( User, :count )
         end
 
         it 'returned user unconfirmed' do
@@ -43,7 +44,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
       context 'and still unconfirmed' do
         before { user.update(confirmed_at: nil) }
         it 'not change users in db' do
-          expect { post :confirm_email, user: {email: user.email} }.to_not change( User, :count )
+          expect { post :confirm_email, user: { email: user.email } }.to_not change( User, :count )
         end
 
         it 'returned user confirmed' do
@@ -119,8 +120,10 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
     end
 
     context 'auth_hash without email' do
-      let!( :auth_hash ) { OmniAuth::AuthHash.new( provider: 'facebook', uid: '123456',
-                                                   info: {  } ) }
+      let!( :auth_hash ) do
+        OmniAuth::AuthHash.new( provider: 'facebook', uid: '123456',
+                                info: {} )
+      end
       it 'assign new user to @user' do
         post :facebook, auth_hash
         expect( assigns( :user ) ).to be_a_new User
@@ -135,8 +138,10 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
   describe 'POST #twitter' do
     let( :auth ) { create :tw_auth, uid: '123456', user: user }
     context 'auth_hash with email' do
-      let!( :auth_hash ) { OmniAuth::AuthHash.new( provider: 'twitter', uid: '123456',
-                                                   info: { email: 'new@user.com' } ) }
+      let!( :auth_hash ) do
+        OmniAuth::AuthHash.new( provider: 'twitter', uid: '123456',
+                                info: { email: 'new@user.com' } )
+      end
       context 'and auth exists' do
         before { auth }
         it 'not change users count in db' do
@@ -192,8 +197,10 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
     end
 
     context 'auth_hash without email' do
-      let!( :auth_hash ) { OmniAuth::AuthHash.new( provider: 'twitter', uid: '123456',
-                                                   info: {  } ) }
+      let!( :auth_hash ) do
+        OmniAuth::AuthHash.new( provider: 'twitter', uid: '123456',
+                                info: {} )
+      end
       it 'assign new user to @user' do
         post :twitter, auth_hash
         expect( assigns( :user ) ).to be_a_new User
@@ -208,8 +215,10 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
   describe 'POST #vkontakte' do
     let( :auth ) { create :vk_auth, uid: '123456', user: user }
     context 'auth_hash with email' do
-      let!( :auth_hash ) { OmniAuth::AuthHash.new( provider: 'vkontakte', uid: '123456',
-                                                   info: { email: 'new@user.com' } ) }
+      let!( :auth_hash ) do
+        OmniAuth::AuthHash.new( provider: 'vkontakte', uid: '123456',
+                                info: { email: 'new@user.com' } )
+      end
       context 'and auth exists' do
         before { auth }
         it 'not change users count in db' do
@@ -265,8 +274,10 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
     end
 
     context 'auth_hash without email' do
-      let!( :auth_hash ) { OmniAuth::AuthHash.new( provider: 'vkontakte', uid: '123456',
-                                                   info: {  } ) }
+      let!( :auth_hash ) do
+        OmniAuth::AuthHash.new( provider: 'vkontakte', uid: '123456',
+                                info: {} )
+      end
       it 'assign new user to @user' do
         post :vkontakte, auth_hash
         expect( assigns( :user ) ).to be_a_new User

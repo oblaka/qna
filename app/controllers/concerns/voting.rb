@@ -1,11 +1,9 @@
 module Voting
   extend ActiveSupport::Concern
 
-
   included do
     before_action :set_votable, only: [:good, :shit, :revoke]
-    before_action :prevent_author, only: [:good, :shit, :revoke]
-    respond_to :json, only: [:vote_up, :vote_down, :vote_cancel]
+    respond_to :json
   end
 
   def good
@@ -30,11 +28,6 @@ module Voting
 
   def set_votable
     @votable = controller_name.classify.constantize.find params[:id]
+    authorize @votable
   end
-
-  def prevent_author
-    return if current_user.id != @votable.user_id
-    render nothing: true, status: :forbidden
-  end
-
 end

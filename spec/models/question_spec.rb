@@ -14,5 +14,4 @@ RSpec.describe Question, type: :model do
 
   it_should_behave_like 'commentable'
   it_should_behave_like 'votable'
-
 end

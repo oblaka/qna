@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 shared_examples 'voting' do
-
   let( :votable_klass ) { described_class.controller_name.singularize.underscore.to_sym }
   let( :votable ) { create( votable_klass ) }
 
   describe 'POST #revoke' do
-
     context 'authorized user' do
       context 'on existing' do
         context 'good vote' do
@@ -200,7 +198,6 @@ shared_examples 'voting' do
           expect { @vote.reload }.to_not change(@vote, :rate)
         end
       end
-
       it 'response 200 ok' do
         sign_in user
         post :shit, id: votable, format: :json

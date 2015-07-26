@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Create question', %q{
+feature 'Create question', '
   In order to get answer from community
   As an authenticated user
   I want to be able to ask the question
-} do
-
+' do
   given(:user) { create(:user) }
   given(:question) { build(:question) }
 
@@ -14,7 +13,7 @@ feature 'Create question', %q{
 
     visit '/questions'
     click_on 'Ask a Question'
-    find_field('Your question').value == ''
+    expect(find_field('Your question').value).to eq nil
     fill_in 'Your question', with: question.title
     fill_in 'more details', with: question.body
     click_on 'save question'
@@ -34,14 +33,12 @@ feature 'Create question', %q{
 
     expect(page).to have_content 'Question could not be created.'
     expect(page).to have_text 'is too short'
-    find_field('Your question').value == 'quest'
+    expect(find_field('Your question').value).to eq 'quest'
   end
 
   scenario 'Non-authenticated user try to create question' do
     visit '/questions'
-    click_on 'Ask a Question'
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
-    expect(page).to have_button 'Log in'
+    expect(page).to_not have_button 'Ask a Question'
+    expect(page).to have_link 'Sign in'
   end
-
 end

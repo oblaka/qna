@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'capybara/poltergeist'
 require 'capybara/email/rspec'
 RSpec.configure do |config|
-
   Capybara.javascript_driver = :poltergeist
 
   config.include FeatureMacros, type: :feature

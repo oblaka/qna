@@ -17,14 +17,14 @@ RSpec.describe Answer, type: :model do
   it_should_behave_like 'commentable'
   it_should_behave_like 'votable'
 
-  describe 'is_solution' do
+  describe 'set_solution' do
     it 'set answer #best to true' do
-      answer1.is_solution
+      answer1.set_solution
       expect(answer1.best).to eq true
     end
 
-    it "set another answer question answers best to false" do
-      answer1.is_solution
+    it 'set another answer question answers best to false' do
+      answer1.set_solution
       answer2.reload
       expect(answer2.best).to eq false
     end

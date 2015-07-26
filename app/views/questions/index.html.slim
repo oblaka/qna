@@ -5,6 +5,7 @@ table class="table table-hover" id='questions'
       td = link_to question.title, question_path(question)
       td = question.body
 
-= link_to 'Ask a Question', new_question_path, class: 'btn btn-primary'
+- if policy(Question).new?
+  = link_to 'Ask a Question', new_question_path, class: 'btn btn-primary'
 
 = subscribe_to "/questions"

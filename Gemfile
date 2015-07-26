@@ -1,12 +1,18 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.2'
 # Use postgresql as the database for Active Record
 gem 'pg'
 
+# Authentication & authorization
 gem 'devise'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+gem 'omniauth-vkontakte'
+gem 'pundit'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -19,7 +25,7 @@ gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
 
-gem "slim-rails"
+gem 'slim-rails'
 gem 'bootstrap-sass'
 gem 'bootstrap_form'
 
@@ -35,10 +41,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'thin'
 gem 'private_pub'
 gem 'responders'
-gem 'omniauth'
-gem 'omniauth-facebook'
-gem 'omniauth-twitter'
-gem 'omniauth-vkontakte'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -50,7 +52,6 @@ gem 'omniauth-vkontakte'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'quiet_assets'
@@ -72,5 +73,4 @@ group :development, :test do
   gem 'poltergeist'
   gem 'launchy'
   gem 'database_cleaner'
-
 end

@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Attach file to question', %q{
+feature 'Attach file to question', '
   In order to get illustrate question
   As an question author
   I can attach file to question
-} do
-
+' do
   given(:user) { create(:user) }
   given(:question) { build(:question) }
 
@@ -15,7 +14,6 @@ feature 'Attach file to question', %q{
   end
 
   scenario 'user attach some files while create question', js: true do
-
     fill_in 'Your question', with: question.title
     fill_in 'more details', with: question.body
     click_on 'add attachment'

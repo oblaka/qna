@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Edit question', %q{
+feature 'Edit question', '
   In order to improve question details
   As an question owner
   I can edit question
-} do
-
+' do
   given(:another_user) { create(:user) }
   given(:question) { create(:question) }
 
@@ -14,7 +13,7 @@ feature 'Edit question', %q{
     visit question_path(question)
     expect(page).to have_content(question.title)
     within page.find("#question_#{question.id}") do
-      find(:link, "edit").click
+      find(:link, 'edit').click
     end
     fill_in 'Your question', with: 'Ritorical question'
     fill_in 'more details', with: 'Ritorical question details'
@@ -26,14 +25,12 @@ feature 'Edit question', %q{
     sign_in(another_user)
     visit question_path(question)
     expect(page).to_not have_content('edit')
-    expect(page.find("#question_#{question.id}")).to have_no_link("edit")
-
+    expect(page.find("#question_#{question.id}")).to have_no_link('edit')
   end
 
   scenario 'foreign user not see edit button and can not edit question' do
     sign_in(another_user)
     visit question_path(question)
-    expect(page.find("#question_#{question.id}")).to have_no_link("edit")
+    expect(page.find("#question_#{question.id}")).to have_no_link('edit')
   end
-
 end

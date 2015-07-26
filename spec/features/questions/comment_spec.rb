@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Commenting question', %q{
+feature 'Commenting question', '
   In order to share my opinion
   As an authenticated user
   I can add comments to question
-} do
-
+' do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
@@ -15,7 +14,6 @@ feature 'Commenting question', %q{
       visit question_path(question)
       within "#question_#{question.id}" do
         click_on 'comment'
-        sleep 1
       end
       fill_in 'comment_body', with: 'some text'
       click_on 'add comment'
@@ -33,5 +31,4 @@ feature 'Commenting question', %q{
       end
     end
   end
-
 end

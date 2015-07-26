@@ -1,12 +1,10 @@
 Rails.application.routes.draw do
-
-
   devise_for :users, controllers: { confirmations: 'confirmations',
                                     omniauth_callbacks: 'omniauth_callbacks' }
   devise_scope :user do
     post 'confirm_email', to: 'omniauth_callbacks#confirm_email'
     authenticate :user do
-      get 'profile', to: 'omniauth_callbacks#profile'#, as: :authenticated_root
+      get 'profile', to: 'omniauth_callbacks#profile' # , as: :authenticated_root
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.
@@ -25,9 +23,9 @@ Rails.application.routes.draw do
     post :good, :shit, :revoke, on: :member
   end
 
-  resources :questions, concerns: [ :voting ] do
+  resources :questions, concerns: [:voting] do
     resources :comments, only: [:new, :create], defaults: { commentable: 'questions' }
-    resources :answers, concerns: [ :voting ], shallow: true, except: :show do
+    resources :answers, concerns: [:voting], shallow: true, except: :show do
       resources :comments, only: [:new, :create], defaults: { commentable: 'answers' }
       post :solution, on: :member
     end

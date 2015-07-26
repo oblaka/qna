@@ -5,7 +5,7 @@
       method: :post,
       remote: true,
       data: { type: :json },
-      class: "btn btn-success btn-xs #{ good_btn_state @question }", id: "good_question_#{@question.id}"
+      class: "btn btn-success btn-xs #{ 'disabled' unless policy(@question).good? }", id: "good_question_#{@question.id}"
     br
     strong id= "rating_question_#{@question.id}"
       = @question.rating
@@ -13,10 +13,10 @@
         method: :post,
         remote: true,
         data: { type: :json },
-        class: "btn btn-link #{ revoke_btn_state @question }", id: "revoke_question_#{@question.id}"
+        class: "btn btn-link #{ 'disabled' unless policy(@question).revoke? }", id: "revoke_question_#{@question.id}"
     br
     = link_to 'shit!', shit_question_path(@question),
       method: :post,
       remote: true,
       data: { type: :json },
-      class: "btn btn-success btn-xs #{ shit_btn_state @question }", id: "shit_question_#{@question.id}"
+      class: "btn btn-success btn-xs #{ 'disabled' unless policy(@question).shit? }", id: "shit_question_#{@question.id}"

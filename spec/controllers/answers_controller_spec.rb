@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-
   let(:answer) { create(:answer) }
   let(:question) { create(:question) }
   let(:user) { create(:user) }
@@ -34,8 +33,8 @@ RSpec.describe AnswersController, type: :controller do
       it 'assign requested answer to @answer' do
         expect(assigns(:answer)).to eq answer
       end
-      it 'response is forbidden status' do
-        expect(response.status).to eq 403
+      it 'response 403 forbidden' do
+        expect( response ).to have_http_status( 403 )
       end
     end
     context 'unauthenticated try set solution' do
@@ -53,34 +52,34 @@ RSpec.describe AnswersController, type: :controller do
       context 'with valid parameters' do
         it 'should save new answer in database' do
           expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
-          .to change(Answer, :count).by(1)
+            .to change(Answer, :count).by(1)
         end
         it 'render create template' do
           post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
           expect(response).to render_template :create
         end
         it 'increases question answers count by 1' do
-          expect { post :create, question_id: question.id, answer: attributes_for(:answer),format: :js }
-          .to change(question.answers, :count).by(1)
+          expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
+            .to change(question.answers, :count).by(1)
         end
         it 'belongs to question' do
-          post :create, question_id: question.id, answer: attributes_for(:answer),format: :js
+          post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
           expect(assigns(:answer).question).to match question
         end
         it 'belongs to user' do
-          post :create, question_id: question.id, answer: attributes_for(:answer),format: :js
+          post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
           expect(assigns(:answer).user).to match user
         end
       end
 
       context 'with invalid params' do
         it 'does not save the answer' do
-          expect { post :create, question_id: question.id, answer: attributes_for(:invalid_answer),format: :js }
-          .to_not change(Answer, :count)
+          expect { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
+            .to_not change(Answer, :count)
         end
 
         it 'redirects to question show view' do
-          post :create, question_id: answer.question.id, answer: attributes_for(:answer),format: :js
+          post :create, question_id: answer.question.id, answer: attributes_for(:answer), format: :js
           expect(response).to render_template :create
         end
       end
@@ -88,11 +87,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'non authenticated user' do
       it 'should not save new answer in database' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:answer),format: :js }
-        .to_not change(Answer, :count)
+        expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
+          .to_not change(Answer, :count)
       end
       it 'response is unauthorized status' do
-        post :create, question_id: question.id, answer: attributes_for(:answer),format: :js
+        post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
         expect(response.status).to eq 401
       end
     end
@@ -120,8 +119,8 @@ RSpec.describe AnswersController, type: :controller do
       it 'assign requested answer to @answer' do
         expect(assigns(:answer)).to eq answer
       end
-      it 'response is forbidden status' do
-        expect(response.status).to eq 403
+      it 'response 403 forbidden' do
+        expect( response ).to have_http_status( 403 )
       end
     end
 
@@ -162,19 +161,19 @@ RSpec.describe AnswersController, type: :controller do
         sign_in(user)
         patch :update, id: answer, answer: { body: 'new fucking body' }, format: :js
       end
-      it 'response is forbidden status' do
-        expect(response.status).to eq 403
-      end
       it 'not change answer attributes' do
         answer.reload
         expect(answer.body).to eq 'You must going to sleep in this situation'
       end
+      it 'response 403 forbidden' do
+        expect( response ).to have_http_status( 403 )
+      end
     end
   end
 
-  describe "DELETE #destroy" do
+  describe 'DELETE #destroy' do
     context 'answer owner' do
-      before {sign_in answer.user }
+      before { sign_in answer.user }
       it 'can delete answer' do
         expect { delete :destroy, id: answer, format: :js }.to change(Answer, :count).by(-1)
       end
@@ -191,10 +190,9 @@ RSpec.describe AnswersController, type: :controller do
         sign_in user
         answer
       end
-
-      it 'response is forbidden status' do
+      it 'response 403 forbidden' do
         delete :destroy, id: answer, format: :js
-        expect(response.status).to eq 403
+        expect( response ).to have_http_status( 403 )
       end
       it 'can not delete answer' do
         expect { delete :destroy, id: answer, format: :js }.to_not change(Answer, :count)
@@ -246,5 +244,4 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
-
 end

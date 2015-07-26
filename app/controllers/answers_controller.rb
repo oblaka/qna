@@ -2,14 +2,14 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: :create
   before_action :load_answer, only: [:edit, :update, :destroy, :solution]
-  before_action :permission_check, only: [:edit, :update, :destroy, :solution]
-  after_action :publish_answer, only: :create
 
   respond_to :js
   include Voting
 
   def create
     @answer = @question.answers.create( answer_params.merge( user: current_user ))
+    authorize @answer
+    publish_answer
   end
 
   def edit
@@ -26,7 +26,7 @@ class AnswersController < ApplicationController
   end
 
   def solution
-    @answer.is_solution
+    @answer.set_solution
     respond_with @answer
   end
 
@@ -42,19 +42,13 @@ class AnswersController < ApplicationController
 
   def load_answer
     @answer = Answer.find params[:id]
-  end
-
-  def permission_check
-    checked_object = action_name == 'solution' ? @answer.question : @answer
-    return if checked_object.user_id == current_user.id
-    render status: :forbidden
+    authorize @answer
   end
 
   def publish_answer
     PrivatePub.publish_to "/question/#{@question.id}/answers", answer: {
       id: @answer.id, body: @answer.body,
-      attachments: @answer.attachments.map { |att| { name: att.identifier, url: att.url} }
+      attachments: @answer.attachments.map { |att| { name: att.identifier, url: att.url } }
     }.to_json if @answer.valid?
   end
-
 end

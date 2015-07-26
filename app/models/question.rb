@@ -1,11 +1,10 @@
 class Question < ActiveRecord::Base
-
   include Commentable
   include Votable
 
   belongs_to :user
   has_many :answers, dependent: :destroy
-  has_one :solution, -> { where best: true }, class_name: "Answer"
+  has_one :solution, -> { where best: true }, class_name: 'Answer'
   has_many :attachments, as: :attachable
   validates :title, :body, :user, presence: true
   validates :title, presence: true, length: { in: 4..69 }

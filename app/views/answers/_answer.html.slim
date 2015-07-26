@@ -10,4 +10,4 @@ p id= "answer_#{@answer.id}"
       = link_to att.file.identifier, att.file.url, class: "btn btn-link"
   .row
     .comments.col-md-5.col-md-offset-1 id= div_comments_id(@answer)
-      = comment_link @answer
+      = comment_link @answer if policy(Comment).create?

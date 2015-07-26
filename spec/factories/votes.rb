@@ -4,5 +4,4 @@ FactoryGirl.define do
     association :votable, factory: :question
     association :user, factory: :user
   end
-
 end

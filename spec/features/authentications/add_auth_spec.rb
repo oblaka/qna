@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Add Auth to user', %q{
+feature 'Add Auth to user', '
   In order to be able to login with various providers
   As an authenticated user
   I can add oauth authorization to my profile
-} do
-
+' do
   given(:user) { create(:user) }
   given(:auth) { create(:fb_auth, uid: '12345') }
 

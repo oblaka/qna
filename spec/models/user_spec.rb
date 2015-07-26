@@ -23,8 +23,10 @@ RSpec.describe User, type: :model do
       end
 
       context 'and not have facebook auth' do
-        let( :auth_hash ) { OmniAuth::AuthHash.new( provider: 'facebook', uid: '123456',
-                                                    info: { email: user.email } ) }
+        let( :auth_hash ) do
+          OmniAuth::AuthHash.new( provider: 'facebook', uid: '123456',
+                                  info: { email: user.email } )
+        end
         it 'does not create new user' do
           expect { User.find_oauth( auth_hash ) }.to_not change( User, :count )
         end
@@ -46,8 +48,10 @@ RSpec.describe User, type: :model do
       end
       context 'absolutely new user' do
         context 'hash with email' do
-          let( :auth_hash ) { OmniAuth::AuthHash.new( provider: 'facebook', uid: '123456',
-                                                      info: { email: 'new@user.com' } ) }
+          let( :auth_hash ) do
+            OmniAuth::AuthHash.new( provider: 'facebook', uid: '123456',
+                                    info: { email: 'new@user.com' } )
+          end
 
           it 'creates user' do
             expect { User.find_oauth( auth_hash ) }.to change( User, :count ).by( 1 )
@@ -76,8 +80,10 @@ RSpec.describe User, type: :model do
         end
 
         context 'hash without email' do
-          let( :auth_hash ) { OmniAuth::AuthHash.new( provider: 'facebook', uid: '123456',
-                                                      info: {  } ) }
+          let( :auth_hash ) do
+            OmniAuth::AuthHash.new( provider: 'facebook', uid: '123456',
+                                    info: {} )
+          end
 
           it 'not creates new user' do
             expect { User.find_oauth( auth_hash ) }.to_not change( User, :count )
@@ -108,7 +114,7 @@ RSpec.describe User, type: :model do
 
     context 'user with email exist' do
       it 'raise exception' do
-        expect { User.confirmed_by( user.email ) }.to raise_exception (ActiveRecord::RecordInvalid)
+        expect { User.confirmed_by( user.email ) }.to raise_exception ActiveRecord::RecordInvalid
       end
     end
   end
@@ -147,7 +153,7 @@ RSpec.describe User, type: :model do
     context 'user not yet have auth' do
       it 'create auth for user in db' do
         user
-        expect{ user.add_auth_by( auth_hash ) }.to change(user.auths, :count).by 1
+        expect { user.add_auth_by( auth_hash ) }.to change(user.auths, :count).by 1
       end
       it 'returns true' do
         expect( user.add_auth_by( auth_hash ) ).to eq true
@@ -156,7 +162,7 @@ RSpec.describe User, type: :model do
     context 'user already have auth' do
       before { user.add_auth_by auth_hash }
       it 'dont change auths' do
-        expect{ user.add_auth_by( auth_hash ) }.to_not change(Auth, :count)
+        expect { user.add_auth_by( auth_hash ) }.to_not change(Auth, :count)
       end
       it 'returns false' do
         expect( user.add_auth_by( auth_hash ) ).to eq false
@@ -165,9 +171,8 @@ RSpec.describe User, type: :model do
     context 'another user already have this auth' do
       before { another_user.add_auth_by auth_hash }
       it 'dont change auths count' do
-        expect{ user.add_auth_by( auth_hash ) }.to_not change(Auth, :count)
+        expect { user.add_auth_by( auth_hash ) }.to_not change(Auth, :count)
       end
     end
   end
-
 end

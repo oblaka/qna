@@ -1,5 +1,4 @@
 class Answer < ActiveRecord::Base
-
   include Commentable
   include Votable
 
@@ -14,11 +13,10 @@ class Answer < ActiveRecord::Base
   scope :best, -> { where(best: true) }
   scope :solution_first, -> { order(best: :desc) }
 
-  def is_solution
+  def set_solution
     transaction do
       question.answers.update_all(best: false)
       update!(best: true)
     end
   end
-
 end

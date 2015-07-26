@@ -3,18 +3,22 @@ vote id= "vote_answer_#{answer.id}"
   method: :post,
   remote: true,
   data:{type: :json },
-  class: "btn btn-link #{ good_btn_state answer }", id: "good_answer_#{answer.id}"
+  class: "btn btn-link #{ 'disabled' unless policy(answer).good? }",
+          id: "good_answer_#{answer.id}"
   = '/'
   = link_to '-', shit_answer_path(answer),
     method: :post,
     remote: true,
     data:{type: :json },
-    class: "btn btn-link #{ shit_btn_state answer }", id: "shit_answer_#{answer.id}"
+    class: "btn btn-link #{ 'disabled' unless policy(answer).shit? }",
+            id: "shit_answer_#{answer.id}"
   strong id= "rating_answer_#{answer.id}"
     = answer.rating
   = link_to 'X', revoke_answer_path(answer),
     method: :post,
     remote: true,
     data:{ type: :json },
-    class: "btn btn-link #{ revoke_btn_state answer }", id: "revoke_answer_#{answer.id}"
-  = comment_link answer
+    class: "btn btn-link #{ 'disabled' unless policy(answer).revoke? }",
+            id: "revoke_answer_#{answer.id}"
+  = comment_link answer if policy(Comment).create?
+

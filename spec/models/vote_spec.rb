@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Vote, type: :model do
-
   it { should validate_numericality_of(:rate) }
   it { should validate_uniqueness_of(:user_id).scoped_to([:votable_id, :votable_type]) }
   it { is_expected.to callback(:cast).after(:create) }
@@ -38,5 +37,4 @@ RSpec.describe Vote, type: :model do
       end
     end
   end
-
 end

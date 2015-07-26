@@ -8,5 +8,5 @@ FactoryGirl.define do
     password_confirmation '1234qwer'
     confirmed_at Time.now
   end
-# generate_confirmation_token
+  # generate_confirmation_token
 end

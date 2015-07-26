@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-
   let(:question) { create(:question) }
   let(:user) { create(:user) }
   let(:invalid_question) { new(:invalid_question) }
@@ -42,7 +41,6 @@ RSpec.describe QuestionsController, type: :controller do
         expect(assigns(:new_answer)).to eq nil
       end
     end
-
   end
 
   describe 'GET #new' do
@@ -59,7 +57,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-
     context 'user is owner of question' do
       before do
         sign_in(question.user)
@@ -78,20 +75,19 @@ RSpec.describe QuestionsController, type: :controller do
         sign_in(user)
         get :edit, id: question
       end
-      it 'render edit view' do
-        expect(response).to redirect_to questions_path
+      it 'redirects to root' do
+        expect(response).to redirect_to root_path
       end
       it 'show warning' do
-        expect(flash[:notice]).to have_content 'It is not yours question!'
+        expect(flash[:alert]).to have_content 'You are not authorized to perform this action.'
       end
     end
-
   end
 
   describe 'POST #create' do
     before { sign_in(user) }
     context 'valid question params' do
-      it "save question in db" do
+      it 'save question in db' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
       it 'belongs to user' do
@@ -168,11 +164,11 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 'redirect to question' do
         patch :update, id: question, question: { title: 'new title', body: 'new large body' }
-        expect(response).to redirect_to question
+        expect(response).to redirect_to root_path
       end
       it 'show alert' do
         patch :update, id: question, question: { title: 'new title', body: 'new large body' }
-        expect(flash[:alert]).to have_content 'It is not yours question!'
+        expect(flash[:alert]).to have_content 'You are not authorized to perform this action.'
       end
     end
   end
@@ -200,14 +196,13 @@ RSpec.describe QuestionsController, type: :controller do
     it 'rendirect to question' do
       question
       delete :destroy, id: question
-      expect(response).to redirect_to question
+      expect(response).to redirect_to root_path
     end
 
     it 'rendirect to question' do
       question
       delete :destroy, id: question
-      expect(flash[:alert]).to have_content 'It is not yours question!'
+      expect(flash[:alert]).to have_content 'You are not authorized to perform this action.'
     end
   end
-
 end

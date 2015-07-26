@@ -1,11 +1,10 @@
 require_relative '../feature_helper'
 
-feature 'Vote for answer', %q{
+feature 'Vote for answer', '
   In order to affect on answer rating
   As an authenticated user
   I can increase or decrease rating
-} do
-
+' do
   given(:user) { create(:user) }
   given(:answer) { create(:answer) }
 
@@ -26,9 +25,9 @@ feature 'Vote for answer', %q{
     end
 
     scenario 'can not vote twice', js: true do
+      expect(page).to have_css("#revoke_answer_#{answer.id}.disabled")
       expect(page).to_not have_css("#good_answer_#{answer.id}.disabled")
       expect(page).to_not have_css("#shit_answer_#{answer.id}.disabled")
-      expect(page).to have_css("#revoke_answer_#{answer.id}.disabled")
       click_on('+')
       expect(page).to have_css("#good_answer_#{answer.id}.disabled")
       expect(page).to have_css("#shit_answer_#{answer.id}.disabled")
@@ -87,5 +86,4 @@ feature 'Vote for answer', %q{
       expect(page).to_not have_css("#revoke_answer_#{answer.id}")
     end
   end
-
 end

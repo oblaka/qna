@@ -1,5 +1,4 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-
   before_action :set_auth_hash, only: [:facebook, :twitter, :vkontakte]
   before_action :authenticate_user!, only: [:profile]
   before_action :try_add_auth, only: [:profile]
@@ -7,9 +6,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def facebook
     getting_hash
   end
+
   def twitter
     getting_hash
   end
+
   def vkontakte
     getting_hash
   end
@@ -56,18 +57,20 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def add_auth_by_auth_hash
     if current_user.add_auth_by @auth_hash
       redirect_to profile_path
-      set_flash_message(:notice, :succesfully_added, kind: @auth_hash.provider) if is_navigational_format?
+      set_flash_message(:notice, :succesfully_added,
+                        kind: @auth_hash.provider) if is_navigational_format?
     else
       redirect_to root_path
-      set_flash_message(:notice, :already_exists, kind: @auth_hash.provider) if is_navigational_format?
+      set_flash_message(:notice, :already_exists,
+                        kind: @auth_hash.provider) if is_navigational_format?
     end
   end
 
   def try_add_auth
-    if session.key? :oauth_hash
-      current_user.add_auth_by session.delete(:oauth_hash)
-      set_flash_message(:notice, :succesfully_added, kind: @auth_hash.provider) if is_navigational_format?
-    end
+    return unless session.key? :oauth_hash
+    current_user.add_auth_by session.delete(:oauth_hash)
+    set_flash_message(:notice, :succesfully_added,
+                      kind: @auth_hash.provider) if is_navigational_format?
   end
 
   def set_auth_hash

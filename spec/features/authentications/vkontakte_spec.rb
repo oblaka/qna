@@ -1,15 +1,13 @@
 require_relative '../feature_helper'
 
-feature 'Vkontakte Authentication', %q{
+feature 'Vkontakte Authentication', '
   In order to authenticate
   As an registered user
   I can sign in and logout
-} do
-
+' do
   given(:registered_user) { create(:user, email: 'user@mail.com') }
   given(:new_user) { build(:user, confirmed_at: nil) }
   given(:auth) { create(:fb_auth, user: registered_user) }
-
 
   context 'user already have vkontakte auth' do
     scenario 'can sign in by vkontakte', js: true do
