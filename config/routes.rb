@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { confirmations: 'confirmations',
                                     omniauth_callbacks: 'omniauth_callbacks' }
   devise_scope :user do
@@ -28,6 +29,14 @@ Rails.application.routes.draw do
     resources :answers, concerns: [:voting], shallow: true, except: :show do
       resources :comments, only: [:new, :create], defaults: { commentable: 'answers' }
       post :solution, on: :member
+    end
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles do
+        get :me, on: :collection
+      end
     end
   end
   # Example resource route with options:

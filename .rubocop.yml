@@ -8,6 +8,7 @@
 AllCops:
   Exclude:
     - 'bin/**/*'
+    - 'config/initializers/*'
     - 'db/**/*'
 
 # Offense count: 365
