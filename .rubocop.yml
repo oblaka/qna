@@ -16,6 +16,10 @@ AllCops:
 Style/SpaceInsideParens:
   Enabled: false
 
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/ClassAndModuleChildren:
+  Enabled: false
+
 # Offense count: 224
 # Configuration parameters: AllowURI, URISchemes.
 Metrics/LineLength:

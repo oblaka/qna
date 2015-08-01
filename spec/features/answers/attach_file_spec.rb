@@ -47,6 +47,7 @@ feature 'Attach file to answer', '
       click_on 'Add an answer'
     end
     visit question_path(question)
+    sleep 1
     within '#answer_1' do
       click_on 'edit'
       check 'spec_helper.rb'

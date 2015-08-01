@@ -7,6 +7,10 @@ class AnswerPolicy < ApplicationPolicy
 
   delegate :good?, :shit?, :revoke?, to: :vote_policy
 
+  def index?
+    true
+  end
+
   def create?
     user.confirmed?
   end

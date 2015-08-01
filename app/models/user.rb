@@ -37,6 +37,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def admin?
+    User.first.id == id
+  end
+
   def add_auth_by(auth_hash)
     auth = Auth.find_or_initialize_by( provider: auth_hash['provider'],
                                        uid: auth_hash['uid'].to_s )
