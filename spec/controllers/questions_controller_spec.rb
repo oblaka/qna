@@ -87,29 +87,40 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     before { sign_in(user) }
     context 'valid question params' do
+      let(:post_create) { post :create, question: attributes_for(:question) }
       it 'save question in db' do
-        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect { post_create }.to change(Question, :count).by(1)
       end
       it 'belongs to user' do
-        post :create, question: attributes_for(:question)
+        post_create
         expect(assigns(:question).user).to match user
       end
       it 'render show view' do
-        post :create, question: attributes_for(:question)
+        post_create
         expect(response).to redirect_to question_path(assigns(:question))
       end
       it 'show success notice' do
-        post :create, question: attributes_for(:question)
+        post_create
         expect(flash[:notice]).to have_content 'Question was successfully created.'
+      end
+      it 'publish question to channel' do
+        channel = "/questions"
+        expect(PrivatePub).to receive(:publish_to).with(channel, anything)
+        post_create
       end
     end
     context 'invalid question params' do
+      let(:post_create) { post :create, question: attributes_for(:invalid_question) }
       it 'not save question in db' do
-        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+        expect { post_create }.to_not change(Question, :count)
       end
       it 'render edit view' do
-        post :create, question: attributes_for(:invalid_question)
+        post_create
         expect(response).to render_template :new
+      end
+      it 'not publish question to channel' do
+        expect(PrivatePub).to_not receive(:publish_to)
+        post_create
       end
     end
   end

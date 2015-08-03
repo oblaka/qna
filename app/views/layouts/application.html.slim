@@ -6,6 +6,10 @@ html
     = stylesheet_link_tag    "application", media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag "application", 'data-turbolinks-track' => true
     = csrf_meta_tags
+    = favicon_link_tag "apple-touch-icon.png",
+                         rel: "apple-touch-icon",
+                         sizes: "100x100",
+                         type: "image/png"
 
   body data={user_id: "#{current_user.id if signed_in?}"}
     nav.navbar.navbar-default role="navigation"

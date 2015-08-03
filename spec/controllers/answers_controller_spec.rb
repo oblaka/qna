@@ -48,39 +48,51 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'authenticated user' do
       before { sign_in user }
+      let(:post_create) { post :create, question_id: question.id,
+                          answer: attributes_for(:answer), format: :js }
 
       context 'with valid parameters' do
         it 'should save new answer in database' do
-          expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
-            .to change(Answer, :count).by(1)
+          expect { post_create }
+          .to change(Answer, :count).by(1)
         end
         it 'render create template' do
-          post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
+          post_create
           expect(response).to render_template :create
         end
         it 'increases question answers count by 1' do
-          expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
-            .to change(question.answers, :count).by(1)
+          expect { post_create }
+          .to change(question.answers, :count).by(1)
         end
         it 'belongs to question' do
-          post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
+          post_create
           expect(assigns(:answer).question).to match question
         end
         it 'belongs to user' do
-          post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
+          post_create
           expect(assigns(:answer).user).to match user
+        end
+
+        it 'publish answer to channel' do
+          channel = "/question/#{question.id}/answers"
+          expect(PrivatePub).to receive(:publish_to).with(channel, anything)
+          post_create
         end
       end
 
       context 'with invalid params' do
+        let(:post_create) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
         it 'does not save the answer' do
-          expect { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
-            .to_not change(Answer, :count)
+          expect { post_create }.to_not change(Answer, :count)
         end
 
-        it 'redirects to question show view' do
-          post :create, question_id: answer.question.id, answer: attributes_for(:answer), format: :js
+        it 'render create template' do
+          post_create
           expect(response).to render_template :create
+        end
+        it 'not publish answer to channel' do
+          expect(PrivatePub).to_not receive(:publish_to)
+          post_create
         end
       end
     end
@@ -88,7 +100,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'non authenticated user' do
       it 'should not save new answer in database' do
         expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
-          .to_not change(Answer, :count)
+        .to_not change(Answer, :count)
       end
       it 'response is unauthorized status' do
         post :create, question_id: question.id, answer: attributes_for(:answer), format: :js

@@ -7,27 +7,15 @@ describe 'Questions API' do
   let!(:question) { questions.first }
   let!(:attach) { create :attachment, attachable: question }
   let!(:comment) { create :comment, commentable: question }
+  let(:object_symbol) { :question }
 
   describe 'GET #index' do
-    let(:url) { '/api/v1/questions' }
-    context 'unauthorized' do
-      it 'returnes 401 if no access_token' do
-        get url, format: :json
-        expect(response).to have_http_status :unauthorized
-      end
-
-      it 'returnes 401 if invalid access_token' do
-        get url, format: :json, access_token: 'someshit'
-        expect(response).to have_http_status :unauthorized
-      end
-    end
+    let(:api_path) { '/api/v1/questions' }
+    it_behaves_like 'api unauthorized'
+    it_behaves_like 'api success'
 
     context 'authorized' do
-      before { get url, format: :json, access_token: access_token.token }
-
-      it 'returnes 200' do
-        expect( response ).to be_success
-      end
+      before { get api_path, format: :json, access_token: access_token.token }
 
       it 'returnes question collection' do
         expect(response.body).to have_json_size(3).at_path 'questions'
@@ -36,7 +24,7 @@ describe 'Questions API' do
       %w( id title body rating user_id created_at updated_at  ).each do |attr|
         it "contains #{attr} with correct value" do
           expect( response.body ).to be_json_eql( question.send( attr.to_sym ).to_json )
-            .at_path( "questions/0/#{attr}" )
+          .at_path( "questions/0/#{attr}" )
         end
       end
 
@@ -47,12 +35,12 @@ describe 'Questions API' do
 
         it 'contains name' do
           expect(response.body).to be_json_eql(attach.file.filename.to_json)
-            .at_path('questions/0/attachments/0/name')
+          .at_path('questions/0/attachments/0/name')
         end
 
         it 'contains url' do
           expect(response.body).to be_json_eql(attach.file.url.to_json)
-            .at_path('questions/0/attachments/0/url')
+          .at_path('questions/0/attachments/0/url')
         end
       end
 
@@ -64,7 +52,7 @@ describe 'Questions API' do
         %w( id body user_id created_at updated_at  ).each do |attr|
           it "contains #{attr} with correct value" do
             expect( response.body ).to be_json_eql( comment.send( attr.to_sym ).to_json )
-              .at_path( "questions/0/comments/0/#{attr}" )
+            .at_path( "questions/0/comments/0/#{attr}" )
           end
         end
       end
@@ -72,26 +60,13 @@ describe 'Questions API' do
   end
 
   describe 'GET #show' do
-    let(:url) { "/api/v1/questions/#{question.id}" }
-    context 'unauthorized' do
-      it 'returnes 401 if no access_token' do
-        get url, format: :json
-        expect(response).to have_http_status :unauthorized
-      end
-
-      it 'returnes 401 if invalid access_token' do
-        get url, format: :json, access_token: 'someshit'
-        expect(response).to have_http_status :unauthorized
-      end
-    end
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+    it_behaves_like 'api unauthorized'
+    it_behaves_like 'api success'
 
     context 'authorized' do
       before { questions }
-      before { get url, format: :json, access_token: access_token.token }
-
-      it 'returnes 200' do
-        expect( response ).to be_success
-      end
+      before { do_request access_token: access_token.token }
 
       it 'contain question with comments' do
         expect( response.body ).to have_json_path( 'question/comments' )
@@ -104,12 +79,12 @@ describe 'Questions API' do
 
         it 'contains name' do
           expect(response.body).to be_json_eql(attach.file.filename.to_json)
-            .at_path('question/attachments/0/name')
+          .at_path('question/attachments/0/name')
         end
 
         it 'contains url' do
           expect(response.body).to be_json_eql(attach.file.url.to_json)
-            .at_path('question/attachments/0/url')
+          .at_path('question/attachments/0/url')
         end
       end
 
@@ -121,7 +96,7 @@ describe 'Questions API' do
         %w( id body user_id created_at updated_at  ).each do |attr|
           it "contains #{attr} with correct value" do
             expect( response.body ).to be_json_eql( comment.send( attr.to_sym ).to_json )
-              .at_path( "question/comments/0/#{attr}" )
+            .at_path( "question/comments/0/#{attr}" )
           end
         end
       end
@@ -129,29 +104,17 @@ describe 'Questions API' do
   end
 
   describe 'GET #answers' do
-    let(:url) { "/api/v1/questions/#{question.id}/answers" }
     let(:answer) { create :answer, question: question }
-    context 'unauthorized' do
-      it 'returnes 401 if no access_token' do
-        get url, format: :json
-        expect(response).to have_http_status :unauthorized
-      end
+    let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+    it_behaves_like 'api unauthorized'
+    it_behaves_like 'api success'
 
-      it 'returnes 401 if invalid access_token' do
-        get url, format: :json, access_token: 'someshit'
-        expect(response).to have_http_status :unauthorized
-      end
-    end
 
     context 'authorized' do
       let!(:ans_comment) { create :comment, commentable: answer }
       let!(:ans_attach) { create :attachment, attachable: answer }
 
-      before { get url, format: :json, access_token: access_token.token }
-
-      it 'returnes 200' do
-        expect( response ).to be_success
-      end
+      before { do_request access_token: access_token.token }
 
       it 'returnes answers collection' do
         expect(response.body).to have_json_size(1).at_path 'answers'
@@ -160,7 +123,7 @@ describe 'Questions API' do
       %w( id body best user_id created_at updated_at  ).each do |attr|
         it "contains #{attr} with correct value" do
           expect( response.body ).to be_json_eql( answer.send( attr.to_sym ).to_json )
-            .at_path( "answers/0/#{attr}" )
+          .at_path( "answers/0/#{attr}" )
         end
       end
 
@@ -171,12 +134,12 @@ describe 'Questions API' do
 
         it 'contains name' do
           expect(response.body).to be_json_eql(ans_attach.file.filename.to_json)
-            .at_path('answers/0/attachments/0/name')
+          .at_path('answers/0/attachments/0/name')
         end
 
         it 'contains url' do
           expect(response.body).to be_json_eql(ans_attach.file.url.to_json)
-            .at_path('answers/0/attachments/0/url')
+          .at_path('answers/0/attachments/0/url')
         end
       end
 
@@ -188,7 +151,7 @@ describe 'Questions API' do
         %w( id body user_id created_at updated_at  ).each do |attr|
           it "contains #{attr} with correct value" do
             expect( response.body ).to be_json_eql( ans_comment.send( attr.to_sym ).to_json )
-              .at_path( "answers/0/comments/0/#{attr}" )
+            .at_path( "answers/0/comments/0/#{attr}" )
           end
         end
       end
@@ -196,27 +159,18 @@ describe 'Questions API' do
   end
 
   describe 'POST #create' do
-    let(:url) { '/api/v1/questions' }
-    context 'unauthorized' do
-      it 'returnes 401 if no access_token' do
-        post url, format: :json
-        expect(response).to have_http_status :unauthorized
-      end
+    let(:api_path) { '/api/v1/questions' }
+    let(:channel) { channel = "/questions" }
 
-      it 'returnes 401 if invalid access_token' do
-        post url, format: :json, access_token: 'someshit'
-        expect(response).to have_http_status :unauthorized
-      end
-    end
+    it_behaves_like 'api unprocessable'
+    it_behaves_like 'api unauthorized'
+    it_behaves_like 'api success'
+    it_behaves_like 'api publishable'
+
     context 'authorized' do
       context 'valid params' do
         before do
-          post url, format: :json, access_token: access_token.token,
-                    question: attributes_for(:question)
-        end
-
-        it 'returnes 200' do
-          expect( response ).to be_success
+          do_request access_token: access_token.token
         end
 
         it 'contain question with comments' do
@@ -226,25 +180,18 @@ describe 'Questions API' do
         %w( id title body rating user_id created_at updated_at  ).each do |attr|
           it "contains #{attr} with correct value" do
             expect( response.body ).to be_json_eql( Question.last.send( attr.to_sym ).to_json )
-              .at_path( "question/#{attr}" )
+            .at_path( "question/#{attr}" )
           end
         end
       end
-
-      context 'invalid param' do
-        before do
-          post url, format: :json, access_token: access_token.token,
-                    question: attributes_for(:invalid_question)
-        end
-
-        it 'returnes 422' do
-          expect(response).to have_http_status :unprocessable_entity
-        end
-
-        it 'contain errors ' do
-          expect( response.body ).to have_json_path( 'errors/title' )
-        end
-      end
     end
+
+    def do_request(params={})
+      post api_path, { question: attributes_for(:question), format: :json }.merge(params)
+    end
+  end
+
+  def do_request(params={})
+    get api_path, { format: :json }.merge(params)
   end
 end
