@@ -49,7 +49,7 @@ describe 'Profile API' do
       %w( id email created_at updated_at ).each do |attr|
         it "contains #{attr}" do
           expect( response.body ).to be_json_eql( users.first.send( attr.to_sym ).to_json )
-          .at_path( "profiles/0/#{attr}" )
+            .at_path( "profiles/0/#{attr}" )
         end
       end
 
@@ -61,7 +61,7 @@ describe 'Profile API' do
     end
   end
 
-  def do_request(params={})
+  def do_request(params = {})
     get api_path, { format: :json }.merge(params)
   end
 end

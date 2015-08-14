@@ -12,6 +12,16 @@ class QuestionsController < ApplicationController
     respond_with @question
   end
 
+  def subscribe
+    @question.subscribe current_user
+    render 'subscription'
+  end
+
+  def unsubscribe
+    @question.unsubscribe current_user
+    render 'subscription'
+  end
+
   def new
     @question = current_user.questions.build
     authorize Question

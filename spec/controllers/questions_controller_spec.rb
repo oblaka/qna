@@ -5,6 +5,8 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:invalid_question) { new(:invalid_question) }
   let(:questions) { create_list(:question, 2) }
+  let(:subscription) { create :subscription, user: user }
+
 
   it_behaves_like 'voting'
 
@@ -39,6 +41,90 @@ RSpec.describe QuestionsController, type: :controller do
     context 'non-authenticated user' do
       it 'assigns nil to @new_answer' do
         expect(assigns(:new_answer)).to eq nil
+      end
+    end
+  end
+
+  describe 'POST #subscribe' do
+    context 'authenticated' do
+      before do
+        sign_in(user)
+      end
+
+      context 'non-subscribed' do
+        let(:do_request) { post :subscribe, id: question, format: :js }
+
+        it 'creates subscription' do
+          question
+          expect { do_request }.to change( Subscription, :count).by 1
+        end
+
+        it 'response ok' do
+          do_request
+          expect(response).to have_http_status 200
+        end
+      end
+
+      context 'already subscribed' do
+        before { subscription }
+        let(:do_request) { post :subscribe, id: subscription.question, format: :js }
+
+        it 'does not creates subscription' do
+          expect { do_request }.to_not change( Subscription, :count)
+        end
+
+        it 'response 403 forbidden' do
+          do_request
+          expect( response ).to have_http_status 403
+        end
+      end
+    end
+
+    context 'unauthenticated' do
+      it 'redirect to sign_in' do
+        post :subscribe, id: question, format: :js
+        expect(response).to have_http_status 401
+      end
+    end
+  end
+
+  describe 'POST #unsubscribe' do
+    context 'authenticated' do
+      before { sign_in(user) }
+
+      context 'non-subscribed' do
+        let(:do_request) { post :unsubscribe, id: question, format: :js }
+
+        it 'creates subscription' do
+          question
+          expect { do_request }.to_not change( Subscription, :count)
+        end
+
+        it 'response 403 forbidden' do
+          do_request
+          expect( response ).to have_http_status 403
+        end
+      end
+
+      context 'already subscribed' do
+        before { subscription }
+        let(:do_request) { post :unsubscribe, id: subscription.question, format: :js }
+
+        it 'does not creates subscription' do
+          expect { do_request }.to change( Subscription, :count ).by -1
+        end
+
+        it 'response ok' do
+          do_request
+          expect(response).to have_http_status 200
+        end
+      end
+    end
+
+    context 'unauthenticated' do
+      it 'redirect to sign_in' do
+        post :subscribe, id: question, format: :js
+        expect(response).to have_http_status 401
       end
     end
   end
@@ -104,7 +190,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(flash[:notice]).to have_content 'Question was successfully created.'
       end
       it 'publish question to channel' do
-        channel = "/questions"
+        channel = '/questions'
         expect(PrivatePub).to receive(:publish_to).with(channel, anything)
         post_create
       end

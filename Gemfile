@@ -45,6 +45,9 @@ gem 'thin'
 gem 'private_pub'
 gem 'responders'
 
+gem 'sidekiq'
+gem 'whenever', :require => false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -63,6 +66,7 @@ group :development, :test do
   gem 'shoulda-matchers', require: false
   gem 'shoulda-callback-matchers'
   gem 'json_spec'
+  gem 'email_spec'
   gem 'capybara'
   gem 'capybara-email'
   gem 'poltergeist'

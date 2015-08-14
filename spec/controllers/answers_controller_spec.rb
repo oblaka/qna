@@ -48,8 +48,10 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'authenticated user' do
       before { sign_in user }
-      let(:post_create) { post :create, question_id: question.id,
-                          answer: attributes_for(:answer), format: :js }
+      let(:post_create) do
+        post :create, question_id: question.id,
+          answer: attributes_for(:answer), format: :js
+      end
 
       context 'with valid parameters' do
         it 'should save new answer in database' do
@@ -204,7 +206,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'response 403 forbidden' do
         delete :destroy, id: answer, format: :js
-        expect( response ).to have_http_status( 403 )
+        expect( response ).to have_http_status 403
       end
       it 'can not delete answer' do
         expect { delete :destroy, id: answer, format: :js }.to_not change(Answer, :count)

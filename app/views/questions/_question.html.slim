@@ -3,6 +3,8 @@
     = render 'voting'
     .col-md-7
       h3= @question.title
+      .subscription= subscription_link @question if signed_in?
+
       - if @question.user == current_user
         = link_to 'edit', edit_question_path(@question), class: 'btn btn-warning btn-xs'
         = link_to 'delete', @question, method: :delete, class: 'btn btn-danger btn-xs'

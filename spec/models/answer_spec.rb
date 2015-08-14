@@ -17,6 +17,15 @@ RSpec.describe Answer, type: :model do
   it_should_behave_like 'commentable'
   it_should_behave_like 'votable'
 
+  describe 'create' do
+    it 'alert subscribers about new answers' do
+          expect(NewAnswerJob)
+    .to receive(:perform_later)
+    .with(question)
+    create :answer, question: question
+    end
+  end
+
   describe 'set_solution' do
     it 'set answer #best to true' do
       answer1.set_solution

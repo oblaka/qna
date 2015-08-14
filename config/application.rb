@@ -14,7 +14,8 @@ module Qna
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-    config.autoload_paths += Dir[Rails.root.join('app', 'policies', 'uploaders')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'jobs', 'policies', 'uploaders')]
+    config.autoload_paths += Dir[Rails.root.join('spec', 'mailers')]
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
@@ -26,6 +27,10 @@ module Qna
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    config.action_mailer.default_url_options = { host: 'localhost:3000' }
+
+    config.active_job.queue_adapter = :sidekiq
 
     config.generators do |gen|
       gen.test_framework :rspec,

@@ -16,3 +16,5 @@ public/uploads
 qna.sublime-project
 qna.sublime-workspace
 *.sql
+
+dump.rdb

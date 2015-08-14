@@ -28,13 +28,13 @@ describe 'Answers API' do
         %w( id body best user_id created_at updated_at  ).each do |attr|
           it "contains #{attr} with correct value" do
             expect( response.body ).to be_json_eql( Answer.last.send( attr.to_sym ).to_json )
-            .at_path( "answer/#{attr}" )
+              .at_path( "answer/#{attr}" )
           end
         end
       end
     end
 
-    def do_request(params={})
+    def do_request(params = {})
       post api_path, { answer: attributes_for(:answer), format: :json }.merge(params)
     end
   end
@@ -59,12 +59,12 @@ describe 'Answers API' do
 
         it 'contains name' do
           expect(response.body).to be_json_eql(attach.file.filename.to_json)
-          .at_path('answer/attachments/0/name')
+            .at_path('answer/attachments/0/name')
         end
 
         it 'contains url' do
           expect(response.body).to be_json_eql(attach.file.url.to_json)
-          .at_path('answer/attachments/0/url')
+            .at_path('answer/attachments/0/url')
         end
       end
 
@@ -76,13 +76,13 @@ describe 'Answers API' do
         %w( id body user_id created_at updated_at  ).each do |attr|
           it "contains #{attr} with correct value" do
             expect( response.body ).to be_json_eql( comment.send( attr.to_sym ).to_json )
-            .at_path( "answer/comments/0/#{attr}" )
+              .at_path( "answer/comments/0/#{attr}" )
           end
         end
       end
     end
 
-    def do_request(params={})
+    def do_request(params = {})
       get api_path, { format: :json }.merge(params)
     end
   end

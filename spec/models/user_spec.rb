@@ -8,6 +8,7 @@ RSpec.describe User, type: :model do
   it { should have_many :comments }
   it { should have_many :votes }
   it { should have_many :auths }
+  it { should have_many :subscriptions }
 
   let!( :user ) { create :user }
   let!( :another_user ) { create :user }

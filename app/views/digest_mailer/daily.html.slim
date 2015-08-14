@@ -1,0 +1,8 @@
+h2
+  | Daily questions digest
+
+- @questions.each do |question|
+    h3
+      = link_to question.title, question_url(question)
+p
+  | We need you answers!

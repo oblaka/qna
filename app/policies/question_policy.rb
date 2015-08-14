@@ -29,6 +29,14 @@ class QuestionPolicy < ApplicationPolicy
     owner?
   end
 
+  def subscribe?
+    record.subscriptions.where(user: user).empty?
+  end
+
+  def unsubscribe?
+    record.subscriptions.where(user: user).any?
+  end
+
   private
 
   def vote_policy

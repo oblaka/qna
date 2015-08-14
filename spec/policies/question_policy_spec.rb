@@ -6,6 +6,7 @@ describe QuestionPolicy do
   let(:question) { create :question }
   let(:vote) { build :vote, votable: question }
   let(:exist_vote) { create :vote, votable: question }
+  let(:subscription) { create :subscription, user: user }
 
   subject { described_class }
 
@@ -32,6 +33,24 @@ describe QuestionPolicy do
       expect(subject).to permit(question.user, question)
     end
     it 'prevents access if user is not owner' do
+      expect(subject).to_not permit(user, question)
+    end
+  end
+
+  permissions :subscribe? do
+    it 'allow subscribe if not yet' do
+      expect(subject).to permit(user, question)
+    end
+    it 'deny subscribe if already exist' do
+      expect(subject).to_not permit(user, subscription.question)
+    end
+  end
+
+  permissions :unsubscribe? do
+    it 'allow unsubscribe if subscribed' do
+      expect(subject).to permit(user, subscription.question)
+    end
+    it 'deny unsubscribe if not subscribed' do
       expect(subject).to_not permit(user, question)
     end
   end

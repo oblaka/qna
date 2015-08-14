@@ -13,10 +13,18 @@ class Answer < ActiveRecord::Base
   scope :best, -> { where(best: true) }
   scope :solution_first, -> { order(best: :desc) }
 
+  after_create :alert_subscribers
+
   def set_solution
     transaction do
       question.answers.update_all(best: false)
       update!(best: true)
     end
+  end
+
+  private
+
+  def alert_subscribers
+    NewAnswerJob.perform_later question
   end
 end
