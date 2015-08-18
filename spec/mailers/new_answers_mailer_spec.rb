@@ -1,11 +1,10 @@
-require "rails_helper"
+require 'rails_helper'
 
 include EmailSpec::Helpers
 include EmailSpec::Matchers
 
 RSpec.describe NewAnswersMailer, type: :mailer do
   describe '.alert (subscription)' do
-
     let(:subscription) { create :subscription }
     let(:mail) { NewAnswersMailer.alert subscription }
 
@@ -24,6 +23,5 @@ RSpec.describe NewAnswersMailer, type: :mailer do
     it 'excludes new question title in body'  do
       expect(mail).to have_body_text(subscription.question.title)
     end
-
   end
 end

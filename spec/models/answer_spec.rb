@@ -19,10 +19,10 @@ RSpec.describe Answer, type: :model do
 
   describe 'create' do
     it 'alert subscribers about new answers' do
-          expect(NewAnswerJob)
-    .to receive(:perform_later)
-    .with(question)
-    create :answer, question: question
+      expect(NewAnswerJob)
+        .to receive(:perform_later)
+        .with(question)
+      create :answer, question: question
     end
   end
 

@@ -1,0 +1,15 @@
+= bootstrap_form_for @search ||= Search.new, layout: :inline,
+   url: search_path, method: :get, remote: true do |f|
+    = f.text_field :query, hide_label: true, autofocus: true, placeholder: 'Cocaine'
+    = f.select :context, Search.context_list, hide_label: true
+    = f.submit 'Search!', class: 'btn btn-success btn-sm'
+
+- unless @results.nil?
+  table class="table table-hover"
+    - @results.each do |obj|
+      tr
+        td
+          .strong
+            = link_to snippet_goal(obj).title,
+              polymorphic_url(snippet_goal(obj)), class: 'btn btn-link'
+          = snippet_body obj

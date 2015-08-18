@@ -1,0 +1,12 @@
+h2 = "summary of, #{@user.title}!"
+
+h4 = "#{@user.title} wrote #{@user.questions.count} questions"
+
+- @user.questions.each do |question|
+  p.strong = question.title
+  = subscription_link question if signed_in?
+
+h4 = "#{@user.title} wrote #{@user.answers.count} answers"
+
+- @user.answers.each do |answer|
+  p = answer.body

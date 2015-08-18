@@ -38,6 +38,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def title
+    email.match( /(\w+)@.*/ ).captures.first
+  end
+
   def admin?
     User.first.id == id
   end

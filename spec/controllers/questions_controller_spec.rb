@@ -7,7 +7,6 @@ RSpec.describe QuestionsController, type: :controller do
   let(:questions) { create_list(:question, 2) }
   let(:subscription) { create :subscription, user: user }
 
-
   it_behaves_like 'voting'
 
   describe 'GET #index' do

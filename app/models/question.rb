@@ -17,11 +17,11 @@ class Question < ActiveRecord::Base
 
   after_create :subscribe_author
 
-  def subscribe user
+  def subscribe(user)
     subscriptions.find_or_create_by(user: user)
   end
 
-  def unsubscribe user
+  def unsubscribe(user)
     sub = subscriptions.find_by(user: user)
     sub.destroy if sub
   end
@@ -31,5 +31,4 @@ class Question < ActiveRecord::Base
   def subscribe_author
     subscribe user
   end
-
 end

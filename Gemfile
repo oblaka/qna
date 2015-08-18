@@ -5,6 +5,10 @@ gem 'rails'
 # Use postgresql as the database for Active Record
 gem 'pg'
 
+# Fulltext search
+gem 'mysql2'
+gem 'thinking-sphinx'
+
 # Authentication & authorization
 gem 'devise'
 gem 'omniauth'
@@ -46,7 +50,7 @@ gem 'private_pub'
 gem 'responders'
 
 gem 'sidekiq'
-gem 'whenever', :require => false
+gem 'whenever', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

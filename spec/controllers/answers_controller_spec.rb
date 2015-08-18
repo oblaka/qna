@@ -50,13 +50,13 @@ RSpec.describe AnswersController, type: :controller do
       before { sign_in user }
       let(:post_create) do
         post :create, question_id: question.id,
-          answer: attributes_for(:answer), format: :js
+                      answer: attributes_for(:answer), format: :js
       end
 
       context 'with valid parameters' do
         it 'should save new answer in database' do
           expect { post_create }
-          .to change(Answer, :count).by(1)
+            .to change(Answer, :count).by(1)
         end
         it 'render create template' do
           post_create
@@ -64,7 +64,7 @@ RSpec.describe AnswersController, type: :controller do
         end
         it 'increases question answers count by 1' do
           expect { post_create }
-          .to change(question.answers, :count).by(1)
+            .to change(question.answers, :count).by(1)
         end
         it 'belongs to question' do
           post_create
@@ -102,7 +102,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'non authenticated user' do
       it 'should not save new answer in database' do
         expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
-        .to_not change(Answer, :count)
+          .to_not change(Answer, :count)
       end
       it 'response is unauthorized status' do
         post :create, question_id: question.id, answer: attributes_for(:answer), format: :js

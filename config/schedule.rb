@@ -14,7 +14,7 @@
 # end
 #
 every :day do
-  runner "DailyDigestJob.perform_later"
+  runner 'DailyDigestJob.perform_later'
 end
 
 # Learn more: http://github.com/javan/whenever

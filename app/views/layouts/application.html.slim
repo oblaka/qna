@@ -28,6 +28,9 @@ html
 
     .row
       .col-md-8.col-md-offset-2
+        .search.pull-right
+          = render 'search/form'
+
         .alert
           - unless alert.nil?
             .alert-success

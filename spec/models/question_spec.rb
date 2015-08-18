@@ -13,7 +13,6 @@ RSpec.describe Question, type: :model do
   it { should have_many :votes }
   it { should accept_nested_attributes_for :attachments }
 
-
   it_should_behave_like 'commentable'
   it_should_behave_like 'votable'
 
@@ -42,7 +41,7 @@ RSpec.describe Question, type: :model do
       before { subscription }
       it 'does not create subscription for user' do
         expect { subscription.question.subscribe(subscription.user) }
-        .to_not change( Subscription, :count)
+          .to_not change( Subscription, :count)
       end
       it 'returnes subscription' do
         expect( question.subscribe( user )).to be_a Subscription
@@ -63,7 +62,7 @@ RSpec.describe Question, type: :model do
       before { subscription }
       it 'does not create subscription for user' do
         expect { subscription.question.unsubscribe( subscription.user ) }
-        .to change( Subscription, :count).by -1
+          .to change( Subscription, :count).by -1
       end
       it 'returnes subscription' do
         expect( subscription.question.unsubscribe( subscription.user )).to be_a Subscription
