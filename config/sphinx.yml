@@ -1,0 +1,2 @@
+pid_file: /home/deployer/qna/shared/sphinx/searchd.pid
+searchd_file_path: /home/deployer/qna/shared/db/sphinx
