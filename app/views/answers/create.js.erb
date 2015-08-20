@@ -7,6 +7,7 @@
   <% end %>
 <% else %>
   $('.alert').html('<div class="alert alert-success">Your answer successfully created.</div>');
+  $('.answers').append('<%= escape_javascript render 'answer',answer: @answer %>');
   $('.new_answer').html('<%= j render 'form', question: @question, answer: nil %>');
   var ansHtml = '<%= j render 'answer',answer: @answer %>';
   if ($.exists('#answer_<%= @answer.id %>')) {

@@ -6,6 +6,7 @@ p id= "answer_#{answer.id}"
   attachments id= "attachments_answer_#{answer.id}"
     - answer.attachments.each do |att|
       = link_to att.file.identifier, att.file.url, class: "btn btn-link"
+  = answer.body
   .row
     .comments.col-md-5.col-md-offset-1 id= div_comments_id(answer)
       - cache answer do
