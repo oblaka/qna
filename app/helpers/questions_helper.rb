@@ -8,4 +8,9 @@ module QuestionsHelper
               method: :post, remote: true, class: 'btn btn-danger btn-xs'
     end
   end
+
+  def question_cache_key(question)
+    own = "#{policy(question).owner?}"
+    "question-#{question.id}-#{own}-#{question.updated_at.to_i}"
+  end
 end

@@ -1,2 +1,2 @@
-$('#answer_<%= @answer.id %>').replaceWith('<%= escape_javascript render 'answer' %>');
+$('#answer_<%= @answer.id %>').replaceWith('<%= escape_javascript render 'answer',answer: @answer %>');
 $('.alert').html('<div class="alert alert-success">Answer edited successfully!</div>');

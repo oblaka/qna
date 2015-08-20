@@ -1,5 +1,4 @@
 module SearchHelper
-
   def snippet_body(obj)
     case
     when obj.is_a?(User)

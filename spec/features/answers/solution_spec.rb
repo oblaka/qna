@@ -1,7 +1,7 @@
 require_relative '../feature_helper'
 
 feature 'Mark Answer as Solution', '
-  In order to
+  In order to highlight best answer
   As an question author
   I can mark answer as solution
 ' do
@@ -35,7 +35,6 @@ feature 'Mark Answer as Solution', '
         within "#answer_#{answer1.id}" do
           click_on 'Mark as Solution'
         end
-        sleep 1
         expect(page).to have_content 'The best answer is chosen'
         expect(first('.answers p')).to have_content(answer1.body)
       end

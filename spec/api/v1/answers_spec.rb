@@ -12,7 +12,7 @@ describe 'Answers API' do
 
   describe 'POST #create' do
     let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
-    let(:channel) { channel = "/question/#{question.id}/answers" }
+    let(:channel) { "/question/#{question.id}/answers" }
 
     it_behaves_like 'api unprocessable'
     it_behaves_like 'api unauthorized'

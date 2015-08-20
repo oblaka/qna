@@ -7,5 +7,6 @@
   <% end %>
 <% else %>
   $('.alert').html('<div class="alert alert-success">Your answer successfully created.</div>');
+  $('.answers').append('<%= escape_javascript render 'answer',answer: @answer %>');
   $('.new_answer').html('<%= j render 'form', question: @question, answer: nil %>');
 <% end %>

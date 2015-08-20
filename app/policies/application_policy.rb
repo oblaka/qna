@@ -49,8 +49,6 @@ class ApplicationPolicy
     Pundit.policy_scope!(user, record.class)
   end
 
-  protected
-
   def owner?
     user.id == record.user_id
   end

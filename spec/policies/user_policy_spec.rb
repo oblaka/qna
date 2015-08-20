@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe UserPolicy do
-
   let(:user) { create :user }
   let(:another_user) { create :user }
 
@@ -15,5 +14,4 @@ describe UserPolicy do
       expect(subject).to_not permit(user, another_user)
     end
   end
-
 end

@@ -81,9 +81,9 @@ feature 'Vote for answer', '
   context 'unauthenticated user ' do
     scenario 'can not vote', js: true do
       visit question_path answer.question
-      expect(page).to_not have_css("#good_answer_#{answer.id}")
-      expect(page).to_not have_css("#shit_answer_#{answer.id}")
-      expect(page).to_not have_css("#revoke_answer_#{answer.id}")
+      expect(page).to have_css("#good_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#shit_answer_#{answer.id}.disabled")
+      expect(page).to have_css("#revoke_answer_#{answer.id}.disabled")
     end
   end
 end

@@ -3,8 +3,8 @@ require 'rails_helper'
 describe 'Questions API' do
   let( :user ) { create :user }
   let(:access_token ) { create :access_token, resource_owner_id: user.id }
-  let!(:questions) { create_list :question, 3 }
-  let!(:question) { questions.first }
+  let(:questions) { create_list :question, 3 }
+  let(:question) { create :question }
   let!(:attach) { create :attachment, attachable: question }
   let!(:comment) { create :comment, commentable: question }
   let(:object_symbol) { :question }
@@ -15,10 +15,13 @@ describe 'Questions API' do
     it_behaves_like 'api success'
 
     context 'authorized' do
-      before { get api_path, format: :json, access_token: access_token.token }
+      before do
+        questions
+        get api_path, format: :json, access_token: access_token.token
+      end
 
       it 'returnes question collection' do
-        expect(response.body).to have_json_size(3).at_path 'questions'
+        expect(response.body).to have_json_size(4).at_path 'questions'
       end
 
       %w( id title body rating user_id created_at updated_at  ).each do |attr|
@@ -159,7 +162,7 @@ describe 'Questions API' do
 
   describe 'POST #create' do
     let(:api_path) { '/api/v1/questions' }
-    let(:channel) { channel = '/questions' }
+    let(:channel) { '/questions' }
 
     it_behaves_like 'api unprocessable'
     it_behaves_like 'api unauthorized'

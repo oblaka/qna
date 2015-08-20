@@ -9,4 +9,11 @@ module CommentsHelper
   def div_comments_id(commentable)
     "comments_#{commentable.class.name.underscore}_#{commentable.id}"
   end
+
+  # def comment_cache_key_for(commentable)
+  #   name = commentable.class.name
+  #   count = commentable.comments.count
+  #   max_updated_at = commentable.comments.maximum(:updated_at).try(:utc).try(:to_s)
+  #   "#{name}-comments-#{count}-#{max_updated_at}"
+  # end
 end

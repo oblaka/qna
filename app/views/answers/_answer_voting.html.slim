@@ -21,4 +21,3 @@ vote id= "vote_answer_#{answer.id}"
     class: "btn btn-link #{ 'disabled' unless policy(answer).revoke? }",
             id: "revoke_answer_#{answer.id}"
   = comment_link answer if policy(Comment).create?
-

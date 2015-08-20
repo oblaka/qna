@@ -1,22 +1,23 @@
-.col-md-2
-  br
-  vote.text-center
-    = link_to 'good!', good_question_path(@question),
-      method: :post,
-      remote: true,
-      data: { type: :json },
-      class: "btn btn-success btn-xs #{ 'disabled' unless policy(@question).good? }", id: "good_question_#{@question.id}"
+- cache voting_cache_key(@question) do
+  .col-md-2
     br
-    strong id= "rating_question_#{@question.id}"
-      = @question.rating
-    = link_to 'revoke', revoke_question_path(@question),
+    vote.text-center
+      = link_to 'good!', good_question_path(@question),
         method: :post,
         remote: true,
         data: { type: :json },
-        class: "btn btn-link #{ 'disabled' unless policy(@question).revoke? }", id: "revoke_question_#{@question.id}"
-    br
-    = link_to 'shit!', shit_question_path(@question),
-      method: :post,
-      remote: true,
-      data: { type: :json },
-      class: "btn btn-success btn-xs #{ 'disabled' unless policy(@question).shit? }", id: "shit_question_#{@question.id}"
+        class: "btn btn-success btn-xs #{ 'disabled' unless policy(@question).good? }", id: "good_question_#{@question.id}"
+      br
+      strong id= "rating_question_#{@question.id}"
+        = @question.rating
+      = link_to 'revoke', revoke_question_path(@question),
+          method: :post,
+          remote: true,
+          data: { type: :json },
+          class: "btn btn-link #{ 'disabled' unless policy(@question).revoke? }", id: "revoke_question_#{@question.id}"
+      br
+      = link_to 'shit!', shit_question_path(@question),
+        method: :post,
+        remote: true,
+        data: { type: :json },
+        class: "btn btn-success btn-xs #{ 'disabled' unless policy(@question).shit? }", id: "shit_question_#{@question.id}"

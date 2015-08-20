@@ -50,6 +50,7 @@ gem 'private_pub'
 gem 'responders'
 
 gem 'sidekiq'
+gem 'redis-rails'
 gem 'whenever', require: false
 
 gem 'dotenv-rails'

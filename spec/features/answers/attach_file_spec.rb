@@ -29,7 +29,7 @@ feature 'Attach file to answer', '
 
     expect(page).to have_content 'Your answer successfully created'
 
-    within '.answers' do
+    within '#answer_1' do
       expect(page).to have_content 'You must going to sleep in this situation'
       expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
       expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/2/rails_helper.rb'
@@ -46,8 +46,6 @@ feature 'Attach file to answer', '
       inputs[1].set("#{Rails.root}/spec/rails_helper.rb")
       click_on 'Add an answer'
     end
-    visit question_path(question)
-    sleep 1
     within '#answer_1' do
       click_on 'edit'
       check 'spec_helper.rb'

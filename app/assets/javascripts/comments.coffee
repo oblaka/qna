@@ -9,5 +9,7 @@ $ ->
     console.log(com_id)
     com_type = $(this).data('comType')
     console.log(com_type)
-    formSt = '<form id="new_comment_form_' + com_type + '_' + com_id + '" role="form" class="form-inline" action="/' + com_type + 's/' + com_id + '/comments" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><div class="form-group"><label class="sr-only control-label required" for="comment_body">Body</label><input class="form-control" type="text" name="comment[body]" id="comment_body"></div><input type="submit" name="commit" value="add comment" class="btn btn-success btn-sm"></form>'
-    $('#comments_' + com_type + '_' + com_id).append(formSt)
+    $('#comments_' + com_type + '_' + com_id).append(commentForm(com_id, com_type))
+
+commentForm = (cid, ctype) ->
+     '<form id="new_comment_form_' + ctype + '_' + cid + '" role="form" class="form-inline" action="/' + ctype + 's/' + cid + '/comments" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><div class="form-group"><label class="sr-only control-label required" for="comment_body">Body</label><input class="form-control" type="text" name="comment[body]" id="comment_body"></div><input type="submit" name="commit" value="add comment" class="btn btn-success btn-sm"></form>'

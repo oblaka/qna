@@ -64,7 +64,7 @@ Rails.application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
 
- # Email
+  # Email
   config.action_mailer.perform_deliveries = true
   config.email_default_from = 'notifier@bobracorp.ru'
   config.action_mailer.default_url_options = { host: 'bobracorp.ru' }

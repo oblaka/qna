@@ -14,7 +14,6 @@ feature 'Commenting answer', '
       visit question_path(answer.question)
       within "#answer_#{answer.id}" do
         click_on 'comment'
-        sleep 1
       end
       fill_in 'comment_body', with: 'some text'
       click_on 'add comment'

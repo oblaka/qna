@@ -1,19 +1,20 @@
-.question id= "question_#{@question.id}" data={question_id: "#{@question.id}", author: "#{@question.user_id == current_user.id if signed_in?}"}
+.question id= "question_#{@question.id}" data={question_id: "#{@question.id}", author: "#{policy(@question).owner?}"}
   .row
     = render 'voting'
     .col-md-7
-      h3= @question.title
       .subscription= subscription_link @question if signed_in?
-
-      - if @question.user == current_user
-        = link_to 'edit', edit_question_path(@question), class: 'btn btn-warning btn-xs'
-        = link_to 'delete', @question, method: :delete, class: 'btn btn-danger btn-xs'
-      p
-        = @question.body
-        - @question.attachments.each do |att|
-          ul
-            li= link_to att.file.identifier, att.file.url, class: "btn btn-link"
-      .comments id= div_comments_id(@question)
-        - @question.comments.each do |comment|
-          p= comment.body
-        = comment_link @question if policy(Comment).create?
+      - cache question_cache_key(@question) do
+        h3= @question.title
+        - if policy(@question).owner?
+          = link_to 'edit', edit_question_path(@question), class: 'btn btn-warning btn-xs'
+          = link_to 'delete', @question, method: :delete, class: 'btn btn-danger btn-xs'
+        p
+          = @question.body
+          - @question.attachments.each do |att|
+            ul
+              li= link_to att.file.identifier, att.file.url, class: "btn btn-link"
+        .comments id= div_comments_id(@question)
+          - @question.comments.each do |comment|
+            - cache comment do
+              p= comment.body
+          = comment_link @question if policy(Comment).create?
