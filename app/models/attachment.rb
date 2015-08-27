@@ -1,7 +1,7 @@
 class Attachment < ActiveRecord::Base
   mount_uploader :file, FileUploader
 
-  belongs_to :attachable, polymorphic: true
+  belongs_to :attachable, polymorphic: true, touch: true
 
   validates :file, presence: true
 

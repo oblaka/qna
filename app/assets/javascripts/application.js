@@ -18,3 +18,4 @@
 //= require cocoon
 //= require turbolinks
 //= require_tree .
+$.exists = function(selector) {return ($(selector).length > 0);}

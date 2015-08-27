@@ -1,0 +1,4 @@
+= link_to 'edit', edit_answer_path(answer), remote: true, class: 'btn btn-link' if policy(answer).edit?
+'
+= link_to 'delete', answer_path(answer), remote: true, method: :delete, class: 'btn btn-link' if policy(answer).destroy?
+'

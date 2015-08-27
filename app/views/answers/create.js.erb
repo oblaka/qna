@@ -7,6 +7,22 @@
   <% end %>
 <% else %>
   $('.alert').html('<div class="alert alert-success">Your answer successfully created.</div>');
-  $('.answers').append('<%= escape_javascript render 'answer',answer: @answer %>');
   $('.new_answer').html('<%= j render 'form', question: @question, answer: nil %>');
+  var ansHtml = '<%= j render 'answer',answer: @answer %>';
+  if ($.exists('#answer_<%= @answer.id %>')) {
+   $('#answer_<%= @answer.id %>').replaceWith( ansHtml);
+   console.log('exist for author');
+                                } else {
+   $('.answers').append( ansHtml);
+   console.log('not exist for author');
+                                        };
+  <% publish_to "/question/#{@answer.question_id}/answers" do %>
+    if ($.exists('#answer_<%= @answer.id %>')) {
+     $('.alert').html('<div class="alert alert-success">Answer already exists.</div>');
+     console.log('exist for others');
+                                  } else {
+     $('.answers').append('<%= j render 'answer_lite',answer: @answer %>');
+     console.log('not exist for others');
+                                          };
+  <% end %>
 <% end %>

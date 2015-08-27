@@ -74,12 +74,6 @@ RSpec.describe AnswersController, type: :controller do
           post_create
           expect(assigns(:answer).user).to match user
         end
-
-        it 'publish answer to channel' do
-          channel = "/question/#{question.id}/answers"
-          expect(PrivatePub).to receive(:publish_to).with(channel, anything)
-          post_create
-        end
       end
 
       context 'with invalid params' do

@@ -1,0 +1,7 @@
+p id= "answer_#{answer.id}"
+  = answer.body
+  attachments id= "attachments_answer_#{answer.id}"
+    - answer.attachments.each do |att|
+      = link_to att.file.identifier, att.file.url, class: "btn btn-link"
+  .row
+    .comments.col-md-5.col-md-offset-1 id= div_comments_id(answer)

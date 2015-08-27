@@ -9,7 +9,6 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.create( answer_params.merge( user: current_user ))
     authorize @answer
-    publish_answer
   end
 
   def edit
@@ -43,12 +42,5 @@ class AnswersController < ApplicationController
   def load_answer
     @answer = Answer.find params[:id]
     authorize @answer
-  end
-
-  def publish_answer
-    PrivatePub.publish_to "/question/#{@question.id}/answers", answer: {
-      id: @answer.id, body: @answer.body,
-      attachments: @answer.attachments.map { |att| { name: att.identifier, url: att.url } }
-    }.to_json if @answer.valid?
   end
 end
