@@ -65,6 +65,13 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
 
   # Email
+  config.action_mailer.delivery_method = :sendmail
+  # Defaults to:
+  config.action_mailer.sendmail_settings = {
+    location: '/usr/sbin/exim4',
+    arguments: '-i'
+  }
+
   config.action_mailer.perform_deliveries = true
   config.email_default_from = 'notifier@bobracorp.ru'
   config.action_mailer.default_url_options = { host: 'bobracorp.ru' }
