@@ -65,17 +65,16 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
 
   # Email
-  config.action_mailer.delivery_method = :sendmail
-  # Defaults to:
-  config.action_mailer.sendmail_settings = {
-    location: '/usr/sbin/exim4',
-    arguments: '-i'
-  }
 
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+    api_key: Rails.application.secrets.mailgun_key,
+    domain: 'bobracorp.ru'
+  }
   config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
   config.email_default_from = 'notifier@bobracorp.ru'
   config.action_mailer.default_url_options = { host: 'bobracorp.ru' }
-  config.action_mailer.raise_delivery_errors = true
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

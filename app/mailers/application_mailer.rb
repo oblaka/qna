@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'from@qna.test'
+  default from: 'mailer@bobracorp.ru'
   # layout 'mailer'
 end

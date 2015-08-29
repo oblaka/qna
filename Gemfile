@@ -57,6 +57,7 @@ gem 'dotenv-rails'
 gem 'therubyracer'
 
 gem 'unicorn'
+gem 'mailgun_rails'
 
 group :development do
   gem 'capistrano', require: false
