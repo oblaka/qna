@@ -9,7 +9,7 @@ RSpec.describe NewAnswersMailer, type: :mailer do
     let(:mail) { NewAnswersMailer.alert subscription }
 
     it 'sends from the default email' do
-      expect(mail).to be_delivered_from 'from@qna.test'
+      expect(mail).to be_delivered_from 'mailer@bobracorp.ru'
     end
 
     it 'sends to the correct user' do
