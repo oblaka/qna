@@ -9,7 +9,7 @@ feature 'Commenting answer', '
   given(:answer) { create(:answer) }
 
   context 'authenticated user' do
-    scenario 'can comment', js: true  do
+    scenario 'can comment', js: true do
       sign_in user
       visit question_path(answer.question)
       within "#answer_#{answer.id}" do
@@ -24,7 +24,7 @@ feature 'Commenting answer', '
   end
 
   context 'un-authenticated user' do
-    scenario 'can not comment', js: true  do
+    scenario 'can not comment', js: true do
       visit question_path(answer.question)
       within "#answer_#{answer.id}" do
         expect(page).to_not have_link 'comment'

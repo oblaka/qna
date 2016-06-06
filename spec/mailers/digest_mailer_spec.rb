@@ -23,11 +23,11 @@ RSpec.describe DigestMailer, type: :mailer do
         expect(mail).to have_subject 'No questions Today'
       end
 
-      it 'excludes new question title in body'  do
+      it 'excludes new question title in body' do
         expect(mail).to_not have_body_text(build(:question).title)
       end
 
-      it 'excludes old question title in body'  do
+      it 'excludes old question title in body' do
         expect(mail).to_not have_body_text(old_question.title)
       end
     end
@@ -40,11 +40,11 @@ RSpec.describe DigestMailer, type: :mailer do
         expect(mail).to have_subject 'Last questions from QnA'
       end
 
-      it 'includes new question title in body'  do
+      it 'includes new question title in body' do
         expect(mail).to have_body_text(new_question.title)
       end
 
-      it 'excludes old question title in body'  do
+      it 'excludes old question title in body' do
         expect(mail).to_not have_body_text(old_question.title)
       end
     end

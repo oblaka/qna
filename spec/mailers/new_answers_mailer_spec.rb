@@ -20,7 +20,7 @@ RSpec.describe NewAnswersMailer, type: :mailer do
       expect(mail).to have_subject "New answers for #{subscription.question.title}"
     end
 
-    it 'excludes new question title in body'  do
+    it 'excludes new question title in body' do
       expect(mail).to have_body_text(subscription.question.title)
     end
   end

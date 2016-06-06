@@ -17,7 +17,7 @@ server 'bobracorp.ru', user: 'deployer', roles: %w{app db web}, primary: true
 
 role :app,  %w{deployer@bobracorp.ru}
 role :web,  %w{deployer@bobracorp.ru}
-role :db,  %w{deployer@bobracorp.ru}
+role :db, %w{deployer@bobracorp.ru}
 
 set :rails_env, :production
 set :stage, :production
